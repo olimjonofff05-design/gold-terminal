@@ -2,15 +2,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Chart, { type Layers, type Theme } from './components/Chart';
 import AnalysisPanel from './components/AnalysisPanel';
 import TradePanel from './components/TradePanel';
-import { analyze, killzoneSpans, trendOf } from './lib/analysis';
+import { analyze, evalMoves, killzoneSpans, trendOf } from './lib/analysis';
 import {
-  feedOf, fetchKlines, fmt, getSpotRef, isCalibrated, onSpotRef, goldMarket, HTF, isDemo, onDemoChange, onSourceChange, PAXG_ID, subscribeBook, subscribeKline, subscribeTickers,
+  feedOf, fetchKlines, fmt, getSpotRef, isCalibrated, onSpotRef, setPriceMode, startSpotRef, subscribeMark, type MarkInfo, type PriceMode, goldMarket, HTF, isDemo, onDemoChange, onSourceChange, subscribeBook, subscribeKline, subscribeTickers,
   SYMBOLS, TF_SEC, TIMEFRAMES, usingFallback, type Book, type TF, type Tick,
 } from './lib/data';
 import { usePaper } from './lib/paper';
-import type { Analysis, BacktestResult, Candle, Setup } from './lib/types';
+import type { Analysis, BacktestResult, Candle, MoveSignal, Setup } from './lib/types';
 
 const LS = 'gold-terminal.ui.v2';
+const nextFundingIn = (t: number) => {
+  const m = Math.max(0, Math.round((t - Date.now()) / 60000));
+  return `${Math.floor(m / 60)}s ${m % 60}d`;
+};
 const loadUi = () => {
   try {
     return JSON.parse(localStorage.getItem(LS) || '{}');
@@ -27,9 +31,10 @@ const LAYER_LABELS: [keyof Layers, string][] = [
   ['ms', 'BOS/CHoCH'],
   ['ema', 'EMA'],
   ['kz', 'Killzone'],
+  ['mom', 'Harakat signali'],
 ];
 
-const DEFAULT_LAYERS: Layers = { fib: true, fvg: true, ob: true, liq: true, ms: true, ema: true, kz: true };
+const DEFAULT_LAYERS: Layers = { fib: true, fvg: true, ob: true, liq: true, ms: true, ema: true, kz: true, mom: true };
 
 export default function App() {
   const ui = useMemo(loadUi, []);
@@ -38,6 +43,16 @@ export default function App() {
   const [layers, setLayers] = useState<Layers>({ ...DEFAULT_LAYERS, ...(ui.layers ?? {}) });
   const [theme, setTheme] = useState<Theme>(ui.theme ?? 'light');
   const [book, setBook] = useState<Book | null>(null);
+  const [mode, setModeState] = useState<PriceMode>(() => {
+    const m: PriceMode = ui.mode === 'spot' ? 'spot' : 'futures';
+    setPriceMode(m);
+    return m;
+  });
+  const setMode = (m: PriceMode) => {
+    setPriceMode(m);
+    setModeState(m);
+  };
+  const [mark, setMark] = useState<MarkInfo | null>(null);
   const [srcRev, setSrcRev] = useState(0);
   const [clock, setClock] = useState(() => Date.now());
   const [alerts, setAlerts] = useState<boolean>(!!ui.alerts);
@@ -60,6 +75,11 @@ export default function App() {
   useEffect(() => onSourceChange(() => setSrcRev((x) => x + 1)) as () => void, []);
   const [, setSpotRev] = useState(0);
   useEffect(() => onSpotRef(() => setSpotRev((x) => x + 1)) as () => void, []);
+  useEffect(() => { startSpotRef(); }, []);
+  useEffect(() => {
+    setMark(null);
+    return subscribeMark(sym, setMark);
+  }, [sym, demo, srcRev]);
   useEffect(() => {
     const id = setInterval(() => setClock(Date.now()), 30000);
     return () => clearInterval(id);
@@ -70,14 +90,14 @@ export default function App() {
   }, [theme]);
   useEffect(() => {
     try {
-      localStorage.setItem(LS, JSON.stringify({ symId, tf, layers, alerts, theme }));
+      localStorage.setItem(LS, JSON.stringify({ symId, tf, layers, alerts, theme, mode }));
     } catch {
       /* ignore */
     }
-  }, [symId, tf, layers, alerts, theme]);
+  }, [symId, tf, layers, alerts, theme, mode]);
 
   // tickers (all symbols + PAXG for premium); resubscribe when a source falls back
-  useEffect(() => subscribeTickers((id, t) => setTicks((p) => ({ ...p, [id]: t }))), [demo, srcRev]);
+  useEffect(() => subscribeTickers((id, t) => setTicks((p) => ({ ...p, [id]: t }))), [demo, srcRev, mode]);
 
   // best bid / ask for current symbol
   useEffect(() => {
@@ -111,7 +131,7 @@ export default function App() {
       dead = true;
       unsub();
     };
-  }, [sym, tf, demo]);
+  }, [sym, tf, demo, mode]);
 
   // higher-timeframe bias + multi-timeframe matrix
   useEffect(() => {
@@ -132,7 +152,7 @@ export default function App() {
       dead = true;
       clearInterval(id);
     };
-  }, [sym, tf, demo]);
+  }, [sym, tf, demo, mode]);
 
   // throttled analysis
   const lastRun = useRef(0);
@@ -193,6 +213,25 @@ export default function App() {
     lastSignal.current = sig;
   }, [analysis, alerts, dataKey, sym, tf]);
 
+  // harakat signali bildirishnomasi
+  const lastMove = useRef('');
+  useEffect(() => {
+    const m = analysis?.momentum.current;
+    const key = m ? `${dataKey}:${m.time}:${m.kind}` : '';
+    if (key && key !== lastMove.current && lastMove.current !== '' && alerts && 'Notification' in window && Notification.permission === 'granted') {
+      new Notification(`⚡ ${sym.label} ${tf}: ${m!.kind} ${m!.dir === 1 ? 'LONG' : 'SHORT'}`, {
+        body: `${m!.note}. Kirish ${fmt(m!.price, sym.digits)}, SL ${fmt(m!.sl, sym.digits)}, TP ${fmt(m!.tp, sym.digits)}`,
+      });
+    }
+    if (key || lastMove.current === '') lastMove.current = key || '-';
+  }, [analysis, alerts, dataKey, sym, tf]);
+  const moveStats = useMemo(() => (analysis ? evalMoves(candles, analysis.momentum.events) : null), [analysis, candles]);
+  const applyMove = useCallback((m: MoveSignal) => {
+    const risk = Math.abs(m.price - m.sl);
+    setPrefill({ setup: { dir: m.dir, entry: m.price, limitEntry: null, sl: m.sl, tp1: m.tp, tp2: m.tp + m.dir * risk, tp3: m.tp + m.dir * 2 * risk, rr1: m.rr, rr2: m.rr + 1 }, n: Date.now() });
+    setView('trade');
+  }, []);
+
   const toggleAlerts = useCallback(async () => {
     if (!alerts && 'Notification' in window && Notification.permission !== 'granted') {
       const r = await Notification.requestPermission();
@@ -208,9 +247,6 @@ export default function App() {
   const feed = feedOf(sym);
   const fallback = usingFallback(sym);
   const mkt = sym.metal ? goldMarket(clock / 1000) : null;
-  const paxg = ticks[PAXG_ID]?.price;
-  const xau = sym.id === 'XAUUSD' && !fallback ? livePrice : ticks.XAUUSD && !usingFallback(SYMBOLS[0]) ? ticks.XAUUSD.price : 0;
-  const premium = paxg && xau ? ((paxg - xau) / xau) * 100 : null;
   const spotRef = getSpotRef();
   const calibrated = isCalibrated(sym);
 
@@ -287,18 +323,25 @@ export default function App() {
             )}
           </div>
           <div className="src-line">
-            <span>Manba: <b>{demo ? 'demo (oflayn)' : feed.name}</b>{calibrated && ' · spotga moslangan'}</span>
-            {calibrated && spotRef && (
-              <span title="Perpetual kontrakt narxi spotdan funding va USDT/USD kursi tufayli farq qiladi. Bu farq har 15 soniyada oʻlchanib, grafik va narxlardan ayiriladi — natija TradingView (OANDA:XAUUSD) ga mos keladi.">
-                Spot: <b>{fmt(spotRef.spot, 2)}</b> · perp farqi <b className="gold">{spotRef.basis >= 0 ? '+' : ''}{fmt(spotRef.basis, 2)}</b>{!spotRef.ok && ' (eski)'}
+            {sym.spotCalibrate && !demo && (
+              <div className="seg-mini" role="group" aria-label="Narx rejimi">
+                <button className={mode === 'futures' ? 'on' : ''} onClick={() => setMode('futures')} title="Binance XAUUSDT perpetual narxi — fyuchersda savdo qiladiganlar uchun">Fyuchers narxi</button>
+                <button className={mode === 'spot' ? 'on' : ''} onClick={() => setMode('spot')} title="Grafikni spot oltinga (OANDA / TradingView XAUUSD) surish">Spot narxi</button>
+              </div>
+            )}
+            <span>Manba: <b>{demo ? 'demo (oflayn)' : feed.name}{!demo && feed.market === 'futures' ? ' perp' : ''}</b>{calibrated && ' · spotga moslangan'}</span>
+            {mark && (
+              <>
+                <span>Mark: <b>{fmt(mark.mark - (calibrated && spotRef ? spotRef.basis : 0), sym.digits)}</b></span>
+                <span title={`Keyingi funding ${nextFundingIn(mark.nextFunding)} dan keyin`}>Funding: <b className={mark.funding >= 0 ? 'up' : 'down'}>{(mark.funding * 100).toFixed(4)}%</b> <small>({nextFundingIn(mark.nextFunding)})</small></span>
+              </>
+            )}
+            {sym.spotCalibrate && spotRef && !demo && (
+              <span title="Fyuchers (XAUUSDT) va spot oltin (OANDA/TradingView) orasidagi farq">
+                Spot: <b>{fmt(spotRef.spot, 2)}</b> · fyuchers farqi <b className="gold">{spotRef.basis >= 0 ? '+' : ''}{fmt(spotRef.basis, 2)}</b>{!spotRef.ok && ' (eski)'}
               </span>
             )}
-            {sym.id === 'XAUUSD' && premium !== null && (
-              <span title="PAXG token narxining spot oltindan farqi. Eski versiya shu tokenni koʻrsatgani uchun TradingView bilan mos kelmagan.">
-                PAXG premium: <b className={Math.abs(premium) > 0.5 ? 'gold' : ''}>{premium >= 0 ? '+' : ''}{premium.toFixed(2)}%</b> ({fmt(paxg!, 2)})
-              </span>
-            )}
-            {fallback && <span className="warn-t">Futures API ochilmadi — PAXG koʻrsatilmoqda, TradingView'dan farq qilishi mumkin</span>}
+            {fallback && <span className="warn-t">Futures API ochilmadi — PAXG koʻrsatilmoqda</span>}
           </div>
           <div className="chart-box">
             <Chart dataKey={dataKey} candles={candles} analysis={analysis} digits={sym.digits} layers={layers} positions={symPositions} setup={analysis?.setup ?? null} theme={theme} killzones={killzones} />
@@ -312,6 +355,9 @@ export default function App() {
           bt={bt}
           btBusy={btBusy}
           mtf={mtf}
+          moveStats={moveStats}
+          livePrice={livePrice}
+          onUseMove={applyMove}
           onUseSetup={() => {
             if (analysis?.setup) setPrefill({ setup: analysis.setup, n: Date.now() });
             setView('trade');
@@ -326,7 +372,7 @@ export default function App() {
       </nav>
 
       <footer className="foot">
-        XAU/USD grafigi Binance XAUUSDT perpetual kontraktidan olinadi va har 15 soniyada spot oltin narxiga (gold-api.com) moslanadi — natija OANDA/TradingView bilan bir xil.
+        XAU/USD grafigi standart holatda Binance XAUUSDT perpetual (fyuchers) narxini koʻrsatadi. "Spot narxi" rejimida grafik spot oltinga (gold-api.com, OANDA/TradingView bilan bir xil) suriladi.
         Spot bozor dam olish kunlari yopiq, XAUUSDT esa 24/7 savdolanadi. Vaqtlar NY vaqti boʻyicha killzonalarga moslangan.
         Tahlil — ehtimollik vositasi, moliyaviy maslahat emas. Savdolar faqat demo hisobda.
       </footer>

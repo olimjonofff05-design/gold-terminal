@@ -21,6 +21,7 @@ export interface Layers {
   ms: boolean;
   ema: boolean;
   kz: boolean;
+  mom: boolean;
 }
 
 export type Theme = 'light' | 'dark';
@@ -284,6 +285,18 @@ export default function Chart({ dataKey, candles, analysis, digits, layers, posi
           shape: a.sweep.dir === 1 ? 'arrowUp' : 'arrowDown',
           text: a.sweep.dir === 1 ? 'SSL sweep' : 'BSL sweep',
         });
+    }
+    if (a && layers.mom) {
+      for (const m of a.momentum.events.slice(-40)) {
+        markers.push({
+          time: T(m.time),
+          position: m.dir === 1 ? 'belowBar' : 'aboveBar',
+          color: m.dir === 1 ? P.up : P.down,
+          shape: m.dir === 1 ? 'arrowUp' : 'arrowDown',
+          text: m.kind === 'Sweep' ? 'SW' : 'QT',
+          size: 1.1,
+        });
+      }
     }
     markers.sort((x, y) => (x.time as number) - (y.time as number));
     cs.setMarkers(markers);
