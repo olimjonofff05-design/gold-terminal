@@ -262,6 +262,15 @@ p { line-height: 1.55; font-size: 12.5px; margin: 0; }
 .src-line { align-items: center; }
 .src-line small { color: var(--dim); }
 
+/* broker kalibrlash */
+.calbox { border: 1px dashed var(--gold); background: rgba(168, 118, 26, 0.06); border-radius: 12px; padding: 10px 12px; display: grid; gap: 8px; font-size: 12.5px; }
+.calbox a { color: var(--gold2); font-weight: 700; }
+.calbox-f { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+.calbox-f label { display: grid; gap: 4px; font-size: 11px; font-weight: 700; color: var(--muted); }
+.calbox-f input { width: 130px; background: var(--panel); border: 1px solid var(--line2); border-radius: 8px; padding: 7px 9px; color: var(--text); font-size: 13px; outline: none; }
+.calbox-f input:focus { border-color: var(--gold); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--gold2); font-weight: 700; text-decoration: underline; font-size: inherit; }
+
 /* ---------- trade panel ---------- */
 .trade { padding: 0; overflow: hidden; }
 .acct { display: flex; gap: 24px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }

@@ -4,7 +4,7 @@ import AnalysisPanel from './components/AnalysisPanel';
 import TradePanel from './components/TradePanel';
 import { analyze, evalMoves, killzoneSpans, trendOf } from './lib/analysis';
 import {
-  feedOf, fetchKlines, fmt, getSpotRef, isCalibrated, onSpotRef, setPriceMode, startSpotRef, subscribeMark, type MarkInfo, type PriceMode, goldMarket, HTF, isDemo, onDemoChange, onSourceChange, subscribeBook, subscribeKline, subscribeTickers,
+  feedOf, fetchKlines, fmt, getBridge, getBrokerCal, setBrokerCal, startBridgeProbe, getSpotRef, isCalibrated, onSpotRef, setPriceMode, startSpotRef, subscribeMark, type MarkInfo, type PriceMode, goldMarket, HTF, isDemo, onDemoChange, onSourceChange, subscribeBook, subscribeKline, subscribeTickers,
   SYMBOLS, TF_SEC, TIMEFRAMES, usingFallback, type Book, type TF, type Tick,
 } from './lib/data';
 import { usePaper } from './lib/paper';
@@ -36,6 +36,45 @@ const LAYER_LABELS: [keyof Layers, string][] = [
 
 const DEFAULT_LAYERS: Layers = { fib: true, fvg: true, ob: true, liq: true, ms: true, ema: true, kz: true, mom: true };
 
+const BRIDGE_DOC = 'https://github.com/olimjonofff05-design/gold-terminal/tree/main/mt5-bridge#readme';
+
+/** Ko'priksiz broker kalibrlash: telefondagi MT5 narxini kiritish */
+function BrokerCalBox({ digits, displayed, cal }: { digits: number; displayed: number; cal: ReturnType<typeof getBrokerCal> }) {
+  const [bid, setBid] = useState('');
+  const [ask, setAsk] = useState('');
+  const b = parseFloat(bid.replace(',', '.'));
+  const a = parseFloat(ask.replace(',', '.'));
+  const ok = isFinite(b) && b > 0 && (!ask || (isFinite(a) && a >= b && a - b < 5));
+  const apply = () => {
+    if (!ok) return;
+    // ko'rsatilgan = xom − spotBasis + offset  ⇒  yangi offset = MT5 bid − (ko'rsatilgan − joriy offset)
+    const base = displayed - (cal?.offset ?? 0);
+    setBrokerCal({ offset: b - base, spread: isFinite(a) ? a - b : cal?.spread ?? 0, at: Date.now() });
+    setBid('');
+    setAsk('');
+  };
+  const ago = cal ? Math.round((Date.now() - cal.at) / 60000) : 0;
+  return (
+    <div className="calbox">
+      <div className="calbox-t">
+        <b>MT5 ko'prigi ishlamayapti.</b> Aniq narx uchun kompyuterda <a href={BRIDGE_DOC} target="_blank" rel="noreferrer">MT5 ko'prigini</a> ishga tushiring.
+        Hozircha telefondagi MT5 narxini kiritib, grafikni moslashtiring:
+      </div>
+      <div className="calbox-f">
+        <label>SELL (Bid)<input inputMode="decimal" value={bid} onChange={(e) => setBid(e.target.value)} placeholder={displayed ? displayed.toFixed(digits) : ''} /></label>
+        <label>BUY (Ask)<input inputMode="decimal" value={ask} onChange={(e) => setAsk(e.target.value)} placeholder="ixtiyoriy" /></label>
+        <button className="btn xs primary" disabled={!ok} onClick={apply}>Moslash</button>
+        {cal && (
+          <span className="muted tiny">
+            Farq {cal.offset >= 0 ? '+' : ''}{cal.offset.toFixed(2)}, spred {cal.spread.toFixed(2)} · {ago < 1 ? 'hozirgina' : `${ago} daq. oldin`}
+            {' '}<button className="linkbtn" onClick={() => setBrokerCal(null)}>tozalash</button>
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const ui = useMemo(loadUi, []);
   const [symId, setSymId] = useState<string>(ui.symId ?? 'XAUUSD');
@@ -44,7 +83,7 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(ui.theme ?? 'light');
   const [book, setBook] = useState<Book | null>(null);
   const [mode, setModeState] = useState<PriceMode>(() => {
-    const m: PriceMode = ui.mode === 'spot' ? 'spot' : 'futures';
+    const m: PriceMode = ui.mode === 'spot' || ui.mode === 'broker' ? ui.mode : 'futures';
     setPriceMode(m);
     return m;
   });
@@ -70,12 +109,15 @@ export default function App() {
 
   const sym = SYMBOLS.find((s) => s.id === symId) ?? SYMBOLS[0];
   const dataKey = `${sym.id}-${tf}`;
+  // manba yoki kalibrlash o'zgarsa tarixni qayta yuklash uchun
+  const feedKey = `${feedOf(sym).market}:${feedOf(sym).stream}:${getBrokerCal()?.offset ?? 0}`; // srcRev o'zgarganda qayta hisoblanadi
 
   useEffect(() => onDemoChange(setDemo) as () => void, []);
   useEffect(() => onSourceChange(() => setSrcRev((x) => x + 1)) as () => void, []);
   const [, setSpotRev] = useState(0);
   useEffect(() => onSpotRef(() => setSpotRev((x) => x + 1)) as () => void, []);
   useEffect(() => { startSpotRef(); }, []);
+  useEffect(() => { startBridgeProbe(); }, [mode]);
   useEffect(() => {
     setMark(null);
     return subscribeMark(sym, setMark);
@@ -131,7 +173,7 @@ export default function App() {
       dead = true;
       unsub();
     };
-  }, [sym, tf, demo, mode]);
+  }, [sym, tf, demo, mode, feedKey]);
 
   // higher-timeframe bias + multi-timeframe matrix
   useEffect(() => {
@@ -152,7 +194,7 @@ export default function App() {
       dead = true;
       clearInterval(id);
     };
-  }, [sym, tf, demo, mode]);
+  }, [sym, tf, demo, mode, feedKey]);
 
   // throttled analysis
   const lastRun = useRef(0);
@@ -248,6 +290,8 @@ export default function App() {
   const fallback = usingFallback(sym);
   const mkt = sym.metal ? goldMarket(clock / 1000) : null;
   const spotRef = getSpotRef();
+  const bridge = getBridge();
+  const brokerCal = getBrokerCal();
   const calibrated = isCalibrated(sym);
 
   return (
@@ -279,7 +323,11 @@ export default function App() {
           })}
         </div>
         <div className="top-r">
-          <span className={`live ${demo ? 'demo' : fallback ? 'warn' : ''}`} title={demo ? 'Birja API ochilmadi — sintetik maʼlumot' : feed.name}><i />{demo ? 'DEMO MAʼLUMOT' : fallback ? 'TAXMINIY' : 'LIVE'}</span>
+          {feed.market === 'mt5' ? (
+            <span className="live" title={`${bridge?.broker ?? ''} · ${bridge?.server ?? ''}`}><i />MT5 LIVE</span>
+          ) : (
+            <span className={`live ${demo ? 'demo' : fallback ? 'warn' : ''}`} title={demo ? 'Birja API ochilmadi — sintetik maʼlumot' : feed.name}><i />{demo ? 'DEMO MAʼLUMOT' : fallback ? 'TAXMINIY' : 'LIVE'}</span>
+          )}
           <button className="btn xs icon" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} title="Mavzuni almashtirish" aria-label="Mavzuni almashtirish">
             {theme === 'light' ? '☾' : '☀'}
           </button>
@@ -323,13 +371,16 @@ export default function App() {
             )}
           </div>
           <div className="src-line">
-            {sym.spotCalibrate && !demo && (
+            {sym.spotCalibrate && (
               <div className="seg-mini" role="group" aria-label="Narx rejimi">
-                <button className={mode === 'futures' ? 'on' : ''} onClick={() => setMode('futures')} title="Binance XAUUSDT perpetual narxi — fyuchersda savdo qiladiganlar uchun">Fyuchers narxi</button>
-                <button className={mode === 'spot' ? 'on' : ''} onClick={() => setMode('spot')} title="Grafikni spot oltinga (OANDA / TradingView XAUUSD) surish">Spot narxi</button>
+                <button className={mode === 'futures' ? 'on' : ''} onClick={() => setMode('futures')} title="Binance XAUUSDT perpetual narxi — Binance fyuchersda savdo qilish uchun">Fyuchers</button>
+                <button className={mode === 'spot' ? 'on' : ''} onClick={() => setMode('spot')} title="Spot oltin — OANDA / TradingView XAUUSD ga mos">Spot</button>
+                <button className={mode === 'broker' ? 'on' : ''} onClick={() => setMode('broker')} title="MT5 brokeringiz (Exness) narxi — telefoningizdagi MT5 bilan bir xil">Broker · MT5</button>
               </div>
             )}
-            <span>Manba: <b>{demo ? 'demo (oflayn)' : feed.name}{!demo && feed.market === 'futures' ? ' perp' : ''}</b>{calibrated && ' · spotga moslangan'}</span>
+            <span>Manba: <b>{demo && !bridge ? 'demo (oflayn)' : feed.market === 'mt5' && bridge ? `MT5 · ${bridge.broker || 'broker'} · ${bridge.symbol}` : feed.name}{!demo && feed.market === 'futures' ? ' perp' : ''}</b>
+              {feed.market === 'mt5' ? <b className="up"> · aniq broker narxi</b> : mode === 'broker' && brokerCal ? ' · brokerga kalibrlangan' : calibrated ? ' · spotga moslangan' : ''}
+            </span>
             {mark && (
               <>
                 <span>Mark: <b>{fmt(mark.mark - (calibrated && spotRef ? spotRef.basis : 0), sym.digits)}</b></span>
@@ -343,6 +394,9 @@ export default function App() {
             )}
             {fallback && <span className="warn-t">Futures API ochilmadi — PAXG koʻrsatilmoqda</span>}
           </div>
+          {sym.spotCalibrate && mode === 'broker' && feed.market !== 'mt5' && (
+            <BrokerCalBox digits={sym.digits} displayed={livePrice} cal={brokerCal} />
+          )}
           <div className="chart-box">
             <Chart dataKey={dataKey} candles={candles} analysis={analysis} digits={sym.digits} layers={layers} positions={symPositions} setup={analysis?.setup ?? null} theme={theme} killzones={killzones} />
             {loading && <div className="loading"><div className="spinner" />Bozor ma'lumotlari yuklanmoqda…</div>}
