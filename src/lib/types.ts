@@ -36,7 +36,7 @@ export interface Zone {
 }
 
 export interface LiquidityLevel {
-  kind: 'BSL' | 'SSL' | 'EQH' | 'EQL' | 'PDH' | 'PDL';
+  kind: 'BSL' | 'SSL' | 'EQH' | 'EQL' | 'PDH' | 'PDL' | 'AsH' | 'AsL';
   price: number;
   time: number;
 }
@@ -88,6 +88,14 @@ export interface Analysis {
   score: number; // -100..100
   setup: Setup | null;
   session: { name: string; killzone: boolean };
+  nyOpen: number | null; // ICT "true day open" — NY 00:00 ochilish narxi
+  asia: { high: number; low: number } | null; // Osiyo diapazoni (20:00–00:00 NY)
+}
+
+export interface KillzoneSpan {
+  from: number;
+  to: number;
+  kind: 'asia' | 'london' | 'ny';
 }
 
 export interface BacktestResult {

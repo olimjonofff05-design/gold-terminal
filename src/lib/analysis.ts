@@ -1,10 +1,12 @@
 import { atr as atrFn, ema, rsi as rsiFn } from './indicators';
+import { nyParts } from './data';
 import type {
   Analysis,
   Candle,
   Dir,
   Factor,
   FibInfo,
+  KillzoneSpan,
   LiquidityLevel,
   Pivot,
   Setup,
@@ -44,13 +46,72 @@ export function findPivots(c: Candle[], left = 3, right = 3): Pivot[] {
   return out;
 }
 
+/**
+ * ICT killzonalar Nyu-York vaqtida belgilanadi (yoz/qish vaqti avtomatik):
+ * Asia 20:00–00:00, London 02:00–05:00, New York AM 07:00–10:00, London Close 10:00–12:00.
+ */
+export function kzOfNyHour(h: number): KillzoneSpan['kind'] | 'lclose' | null {
+  if (h >= 20) return 'asia';
+  if (h >= 2 && h < 5) return 'london';
+  if (h >= 7 && h < 10) return 'ny';
+  if (h >= 10 && h < 12) return 'lclose';
+  return null;
+}
+
 function sessionOf(t: number): { name: string; killzone: boolean } {
-  const h = new Date(t * 1000).getUTCHours();
-  if (h >= 7 && h < 10) return { name: 'London Killzone', killzone: true };
-  if (h >= 12 && h < 15) return { name: 'New York Killzone', killzone: true };
-  if (h >= 0 && h < 6) return { name: 'Osiyo sessiyasi', killzone: false };
-  if (h >= 15 && h < 17) return { name: 'London Close', killzone: true };
+  const h = nyParts(t).hour;
+  const k = kzOfNyHour(h);
+  if (k === 'london') return { name: 'London Killzone', killzone: true };
+  if (k === 'ny') return { name: 'New York Killzone', killzone: true };
+  if (k === 'lclose') return { name: 'London Close', killzone: true };
+  if (k === 'asia') return { name: 'Osiyo sessiyasi', killzone: false };
   return { name: 'Sessiyalar oraligʻi', killzone: false };
+}
+
+/** Grafikda soyalash uchun killzone oraliqlari (faqat intraday TF) */
+export function killzoneSpans(c: Candle[], stepSec: number): KillzoneSpan[] {
+  if (!c.length || stepSec > 3600) return [];
+  const off = nyParts(c[c.length - 1].time).offset;
+  const out: KillzoneSpan[] = [];
+  let cur: KillzoneSpan | null = null;
+  for (const x of c) {
+    const h = new Date((x.time + off) * 1000).getUTCHours();
+    const k = kzOfNyHour(h);
+    const kind = k === 'lclose' ? null : k;
+    if (kind && cur && cur.kind === kind && x.time - cur.to <= stepSec) cur.to = x.time;
+    else if (kind) out.push((cur = { from: x.time, to: x.time, kind }));
+    else cur = null;
+  }
+  return out;
+}
+
+/** NY 00:00 ochilish narxi va undan oldingi Osiyo diapazoni */
+function nyDayLevels(c: Candle[]): { nyOpen: number | null; asia: { high: number; low: number } | null } {
+  const n = c.length;
+  if (!n) return { nyOpen: null, asia: null };
+  const step = n > 1 ? c[n - 1].time - c[n - 2].time : 0;
+  if (!step || step > 3600) return { nyOpen: null, asia: null };
+  const off = nyParts(c[n - 1].time).offset;
+  const local = (t: number) => t + off;
+  const dayStart = Math.floor(local(c[n - 1].time) / 86400) * 86400; // NY 00:00 (local seconds)
+  let nyOpen: number | null = null;
+  let hi = -Infinity;
+  let lo = Infinity;
+  for (let i = n - 1; i >= 0; i--) {
+    const lt = local(c[i].time);
+    if (lt >= dayStart) {
+      if (lt < dayStart + step) nyOpen = c[i].open;
+      continue;
+    }
+    if (lt < dayStart - 4 * 3600) break;
+    hi = Math.max(hi, c[i].high);
+    lo = Math.min(lo, c[i].low);
+  }
+  if (nyOpen === null) {
+    const first = c.find((x) => local(x.time) >= dayStart);
+    nyOpen = first ? first.open : null;
+  }
+  return { nyOpen, asia: isFinite(hi) ? { high: hi, low: lo } : null };
 }
 
 export interface AnalyzeOptions {
@@ -87,7 +148,7 @@ export function analyze(c: Candle[], opts: AnalyzeOptions = {}): Analysis | null
   const obs: (Zone & { dead?: boolean })[] = [];
   for (let j = 0; j < n; j++) {
     const conf = byConfirm.get(j);
-    if (conf) for (const p of conf) p.type === 'H' ? (lastH = p) : (lastL = p);
+    if (conf) for (const p of conf) { if (p.type === 'H') lastH = p; else lastL = p; }
     const cj = c[j];
     // order block invalidation
     for (const ob of obs) {
@@ -185,6 +246,12 @@ export function analyze(c: Candle[], opts: AnalyzeOptions = {}): Analysis | null
   if (isFinite(pdh)) {
     liquidity.push({ kind: 'PDH', price: pdh, time: pdt });
     liquidity.push({ kind: 'PDL', price: pdl, time: pdt });
+  }
+
+  const day = nyDayLevels(c); // backtest ham xuddi shu qoidalar bilan ishlashi uchun light'da ham hisoblanadi
+  if (day.asia) {
+    if (price < day.asia.high) liquidity.push({ kind: 'AsH', price: day.asia.high, time: c[n - 1].time });
+    if (price > day.asia.low) liquidity.push({ kind: 'AsL', price: day.asia.low, time: c[n - 1].time });
   }
 
   {
@@ -304,6 +371,17 @@ export function analyze(c: Candle[], opts: AnalyzeOptions = {}): Analysis | null
     note: r > 75 ? `RSI ${r.toFixed(0)} — haddan tashqari xarid` : r < 25 ? `RSI ${r.toFixed(0)} — haddan tashqari sotuv` : `RSI ${r.toFixed(0)}`,
   });
 
+  if (day.nyOpen !== null && atr) {
+    // ICT: bullish kunda NY ochilishidan PASTDA xarid qilish, bearishda — USTIDA sotish
+    const d = (price - day.nyOpen) / atr;
+    const bias = htf || trend;
+    const v = bias ? clamp(-d * 0.5) * (Math.sign(-d) === bias ? 1 : 0.5) : 0;
+    factors.push({
+      key: 'mo', label: 'NY Midnight Open', weight: 5, value: v,
+      note: `Narx NY 00:00 ochilishidan ${d >= 0 ? 'yuqorida' : 'pastda'} (${d >= 0 ? '+' : ''}${d.toFixed(1)} ATR)${bias ? (Math.sign(-d) === bias ? ' — ICT boʻyicha qulay tomonda' : (bias === 1 ? ' — long uchun qimmat, chekinishni kuting' : ' — short uchun arzon, qaytishni kuting')) : ''}`,
+    });
+  }
+
   const wsum = factors.reduce((s, f) => s + f.weight, 0);
   const score = Math.round((factors.reduce((s, f) => s + f.value * f.weight, 0) / wsum) * 100);
 
@@ -312,6 +390,8 @@ export function analyze(c: Candle[], opts: AnalyzeOptions = {}): Analysis | null
   return {
     price, atr, rsi: r, ema20, ema50, ema200, trend, events, pivots: confirmed, zones, liquidity, sweep, fib, factors, score, setup,
     session: sessionOf(c[n - 1].time),
+    nyOpen: day.nyOpen,
+    asia: day.asia,
   };
 }
 
