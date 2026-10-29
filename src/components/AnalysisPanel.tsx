@@ -1,4 +1,5 @@
-import type { Analysis, BacktestResult } from '../lib/types';
+import type { Analysis, BacktestResult, MoveSignal } from '../lib/types';
+import type { MoveStats } from '../lib/analysis';
 import { fmt } from '../lib/data';
 
 interface Props {
@@ -7,7 +8,70 @@ interface Props {
   bt: (BacktestResult & { equity: number[] }) | null;
   btBusy: boolean;
   mtf: { tf: string; bias: number }[];
+  moveStats: (MoveStats & { results: Map<number, number> }) | null;
+  livePrice: number;
+  onUseMove: (m: MoveSignal) => void;
   onUseSetup: () => void;
+}
+
+const KIND_UZ: Record<MoveSignal['kind'], string> = { Qaytish: 'Qaytish', Sweep: 'Sweep' };
+const hhmm = (t: number) => new Date(t * 1000).toLocaleString('uz-UZ', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+function MovesCard({ a, digits, stats, livePrice, onUse }: { a: Analysis; digits: number; stats: Props['moveStats']; livePrice: number; onUse: (m: MoveSignal) => void }) {
+  const m = a.momentum;
+  const cur = m.current;
+  const F = (x: number) => fmt(x, digits);
+  const recent = m.events.slice(-6).reverse();
+  return (
+    <section className={`card moves ${cur ? (cur.dir === 1 ? 'hot-up' : 'hot-down') : ''}`}>
+      <div className="card-head">
+        <span className="eyebrow">Harakat signallari</span>
+        {cur && <span className={`pill ${cur.dir === 1 ? 'up' : 'down'}`}>{KIND_UZ[cur.kind]} {cur.dir === 1 ? 'LONG' : 'SHORT'}</span>}
+      </div>
+      {cur ? (
+        <>
+          <p className="move-note">{cur.note}</p>
+          <div className="levels">
+            <div><span>Kirish (signal narxi)</span><b>{F(cur.price)}</b></div>
+            <div><span>Hozirgi narx</span><b>{F(livePrice)} <small>{((livePrice - cur.price) * cur.dir >= 0 ? '+' : '')}{F((livePrice - cur.price) * cur.dir)}</small></b></div>
+            <div><span>Stop Loss</span><b className="down">{F(cur.sl)}</b></div>
+            <div><span>Take Profit · {cur.rr}R</span><b className="up">{F(cur.tp)}</b></div>
+          </div>
+          <button className={`btn wide ${cur.dir === 1 ? 'buy' : 'sell'}`} onClick={() => onUse(cur)}>
+            {cur.dir === 1 ? 'Long' : 'Short'} buyurtmani tayyorlash
+          </button>
+        </>
+      ) : (
+        <div className="move-meter">
+          <div><span>3 sham harakati</span><b className={m.moveAtr >= 0 ? 'up' : 'down'}>{m.moveAtr >= 0 ? '+' : ''}{m.moveAtr.toFixed(1)} ATR</b></div>
+          <div><span>Hajm</span><b className={m.volRatio >= 1.3 ? 'gold' : ''}>{m.volRatio.toFixed(1)}×</b></div>
+          <div><span>10 sham</span><b className={m.roc >= 0 ? 'up' : 'down'}>{m.roc >= 0 ? '+' : ''}{m.roc.toFixed(2)}%</b></div>
+          <div><span>20 sham diapazoni</span><b>{F(m.rangeLow)} – {F(m.rangeHigh)}</b></div>
+        </div>
+      )}
+      {!cur && <p className="muted tiny">Hozir signal yoʻq. Narx 3 shamda 1.8 ATR dan koʻp yursa (qaytishga kirish) yoki killzone ichida diapazondan chiqib qaytsa (sweep), signal shu yerda chiqadi. Keskin harakat ortidan quvmang — tarixda bu zarar bergan.</p>}
+      {recent.length > 0 && (
+        <ul className="move-list">
+          {recent.map((e) => {
+            const r = stats?.results.get(e.time);
+            return (
+              <li key={e.time + e.kind}>
+                <span className="t">{hhmm(e.time)}</span>
+                <span className={e.dir === 1 ? 'up' : 'down'}>{e.dir === 1 ? '▲' : '▼'} {KIND_UZ[e.kind]}</span>
+                <b className={r === undefined ? 'muted' : r > 0 ? 'up' : 'down'}>{r === undefined ? 'ochiq' : r > 0 ? `+${r}R` : '−1R'}</b>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {stats && stats.n > 0 && (
+        <p className="tiny muted move-stats">
+          Shu grafik tarixida: {stats.n} ta signal, aniqlik <b className={stats.totalR >= 0 ? 'up' : 'down'}>{(stats.winRate * 100).toFixed(0)}%</b>, jami <b className={stats.totalR >= 0 ? 'up' : 'down'}>{stats.totalR >= 0 ? '+' : ''}{stats.totalR.toFixed(0)}R</b>
+          {' '}({Object.entries(stats.byKind).map(([k, v]) => `${k} ${v.n ? Math.round((v.w / v.n) * 100) : 0}%`).join(', ')}). Qaytish 1.5R (foyda uchun 40%+ kerak), Sweep 2R (34%+ kerak).
+        </p>
+      )}
+    </section>
+  );
 }
 
 function verdict(score: number) {
@@ -56,7 +120,7 @@ function Spark({ data }: { data: number[] }) {
   );
 }
 
-export default function AnalysisPanel({ a, digits, bt, btBusy, mtf, onUseSetup }: Props) {
+export default function AnalysisPanel({ a, digits, bt, btBusy, mtf, moveStats, livePrice, onUseMove, onUseSetup }: Props) {
   if (!a) return <aside className="panel analysis"><div className="skeleton">Bozor tahlil qilinmoqda…</div></aside>;
   const v = verdict(a.score);
   const s = a.setup;
@@ -82,6 +146,8 @@ export default function AnalysisPanel({ a, digits, bt, btBusy, mtf, onUseSetup }
           ))}
         </div>
       </section>
+
+      <MovesCard a={a} digits={digits} stats={moveStats} livePrice={livePrice} onUse={onUseMove} />
 
       <section className="card">
         <div className="card-head"><span className="eyebrow">Savdo setapi</span>{s && <span className={`pill ${s.dir === 1 ? 'up' : 'down'}`}>{s.dir === 1 ? 'LONG' : 'SHORT'}</span>}</div>

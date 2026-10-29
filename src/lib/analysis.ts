@@ -7,6 +7,8 @@ import type {
   Factor,
   FibInfo,
   KillzoneSpan,
+  Momentum,
+  MoveSignal,
   LiquidityLevel,
   Pivot,
   Setup,
@@ -112,6 +114,93 @@ function nyDayLevels(c: Candle[]): { nyOpen: number | null; asia: { high: number
     nyOpen = first ? first.open : null;
   }
   return { nyOpen, asia: isFinite(hi) ? { high: hi, low: lo } : null };
+}
+
+// ---------------- Harakat (momentum) signallari ----------------
+/**
+ * Fyuchers treyderi uchun narxning keskin ko'tarilishi/tushishidan foydalanish.
+ *
+ * 2026-10 da Binance XAUUSDT (5m/15m/1h, har birida 1500 sham) tarixida sinaldi: harakat ORTIDAN
+ * quvish (breakout/impuls tomoniga kirish) zarar berdi (2R da aniqlik 24–33%). Har ikkala
+ * tarix yarmida ham musbat chiqqan ikkita qoida qoldirildi:
+ *  • Qaytish — 3 shamda ≥1.8 ATR keskin harakat (tana ≥60%) → TESKARI tomonga kirish.
+ *              SL 1.5 ATR, TP 1.5R. Oltin intraday'da keskin harakatdan keyin qisman qaytadi.
+ *  • Sweep   — killzone ichida (London 02–05, NY 07–11 NY vaqti) oldingi sham 20 sham
+ *              diapazonidan chiqqan, joriy sham ichkariga qaytib yopilgan → teskari tomonga
+ *              (ICT likvidlik olinishi / "turtle soup"). SL 1 ATR, TP 2R.
+ * Kirish — signal shami yopilishida. Signallar orasida kamida 5 sham.
+ */
+const MOVE_RULES = {
+  Qaytish: { minMoveAtr: 1.8, slAtr: 1.5, rr: 1.5 },
+  Sweep: { slAtr: 1, rr: 2 },
+} as const;
+const inKz = (h: number) => (h >= 2 && h < 5) || (h >= 7 && h < 11);
+
+function detectMove(c: Candle[], j: number, atrArr: number[], nyOff: number): MoveSignal | null {
+  if (j < 23) return null;
+  const a = atrArr[j];
+  if (!a) return null;
+  const k = c[j];
+  const range = k.high - k.low || 1e-9;
+  const body = Math.abs(k.close - k.open);
+  const mk = (dir: Dir, kind: MoveSignal['kind'], slAtr: number, rr: number, strength: number, note: string): MoveSignal => {
+    const risk = slAtr * a;
+    return { i: j, time: k.time, dir, kind, price: k.close, sl: k.close - dir * risk, tp: k.close + dir * rr * risk, rr, strength: clamp(strength, 0, 1), note };
+  };
+  // Sweep (soxta breakout) — faqat killzone ichida
+  const h = new Date((k.time + nyOff) * 1000).getUTCHours();
+  if (inKz(h)) {
+    let phi = -Infinity;
+    let plo = Infinity;
+    for (let q = j - 21; q < j - 1; q++) {
+      phi = Math.max(phi, c[q].high);
+      plo = Math.min(plo, c[q].low);
+    }
+    const p = c[j - 1];
+    const R = MOVE_RULES.Sweep;
+    if (p.high > phi && k.close < phi && k.close < k.open)
+      return mk(-1, 'Sweep', R.slAtr, R.rr, 0.6, `${phi.toFixed(2)} ustidagi likvidlik olindi va narx diapazonga qaytdi — short`);
+    if (p.low < plo && k.close > plo && k.close > k.open)
+      return mk(1, 'Sweep', R.slAtr, R.rr, 0.6, `${plo.toFixed(2)} ostidagi likvidlik olindi va narx diapazonga qaytdi — long`);
+  }
+  // Qaytish (keskin impulsga qarshi)
+  const move = k.close - c[j - 2].open;
+  const R = MOVE_RULES.Qaytish;
+  if (Math.abs(move) >= R.minMoveAtr * a && body >= 0.6 * range && Math.sign(k.close - k.open) === Math.sign(move)) {
+    const dir: Dir = move > 0 ? -1 : 1;
+    return mk(dir, 'Qaytish', R.slAtr, R.rr, Math.abs(move) / (3.5 * a),
+      `3 shamda ${Math.abs(move / a).toFixed(1)} ATR ${move > 0 ? 'koʻtarilish' : 'tushish'} — qaytishga ${dir === 1 ? 'long' : 'short'} (quvmang)`);
+  }
+  return null;
+}
+
+export function momentumOf(c: Candle[], atrArr: number[], light: boolean): Momentum {
+  const n = c.length;
+  const a = atrArr[n - 1] || 1;
+  const nyOff = nyParts(c[n - 1].time).offset;
+  const events: MoveSignal[] = [];
+  const from = light ? n - 2 : Math.max(23, n - 400);
+  for (let j = from; j < n; j++) {
+    const last = events[events.length - 1];
+    if (last && j - last.i < 5) continue;
+    const m = detectMove(c, j, atrArr, nyOff);
+    if (m) events.push(m);
+  }
+  const cur = events.length && events[events.length - 1].i >= n - 2 ? events[events.length - 1] : null;
+  let hi = -Infinity;
+  let lo = Infinity;
+  let vs = 0;
+  for (let q = Math.max(0, n - 21); q < n - 1; q++) {
+    hi = Math.max(hi, c[q].high);
+    lo = Math.min(lo, c[q].low);
+    vs += c[q].volume;
+  }
+  const moveAtr = n > 3 ? (c[n - 1].close - c[n - 3].open) / a : 0;
+  const roc = n > 11 ? ((c[n - 1].close - c[n - 11].close) / c[n - 11].close) * 100 : 0;
+  return {
+    dir: cur ? cur.dir : 0,
+    moveAtr, roc, volRatio: vs ? c[n - 1].volume / (vs / 20) : 1, rangeHigh: hi, rangeLow: lo, current: cur, events,
+  };
 }
 
 export interface AnalyzeOptions {
@@ -382,6 +471,17 @@ export function analyze(c: Candle[], opts: AnalyzeOptions = {}): Analysis | null
     });
   }
 
+  const momentum = momentumOf(c, atrArr, !!opts.light);
+  {
+    const m = momentum.current;
+    factors.push({
+      key: 'mom', label: 'Harakat signali (qaytish / sweep)', weight: 10,
+      // keskin harakatdan keyin uning davomini emas, qaytishini kutamiz
+      value: m ? m.dir * Math.max(0.5, m.strength) : clamp(-momentum.moveAtr / 4),
+      note: m ? `${m.kind}: ${m.note}` : `Oxirgi 3 sham: ${momentum.moveAtr >= 0 ? '+' : ''}${momentum.moveAtr.toFixed(1)} ATR, hajm ${momentum.volRatio.toFixed(1)}×`,
+    });
+  }
+
   const wsum = factors.reduce((s, f) => s + f.weight, 0);
   const score = Math.round((factors.reduce((s, f) => s + f.value * f.weight, 0) / wsum) * 100);
 
@@ -390,6 +490,7 @@ export function analyze(c: Candle[], opts: AnalyzeOptions = {}): Analysis | null
   return {
     price, atr, rsi: r, ema20, ema50, ema200, trend, events, pivots: confirmed, zones, liquidity, sweep, fib, factors, score, setup,
     session: sessionOf(c[n - 1].time),
+    momentum,
     nyOpen: day.nyOpen,
     asia: day.asia,
   };
@@ -439,4 +540,36 @@ export function trendOf(c: Candle[]): 0 | Dir {
   const e = a.factors.find((f) => f.key === 'ema')!.value;
   if (a.trend !== 0) return a.trend;
   return e > 0 ? 1 : e < 0 ? -1 : 0;
+}
+
+export interface MoveStats { n: number; wins: number; losses: number; open: number; winRate: number; totalR: number; byKind: Record<string, { n: number; w: number }> }
+/**
+ * Harakat signallarini tarixda sinash: signal shami yopilishida kirish, keyingi shamlardan
+ * SL yoki TP birinchi tegishi kutiladi (bitta shamda ikkalasi bo'lsa — SL, ehtiyotkor).
+ */
+export function evalMoves(c: Candle[], events: MoveSignal[], maxBars = 60): MoveStats & { results: Map<number, number> } {
+  const byKind: MoveStats['byKind'] = {};
+  const results = new Map<number, number>();
+  let wins = 0;
+  let losses = 0;
+  let open = 0;
+  let totalR = 0;
+  for (const e of events) {
+    let r: number | null = null;
+    for (let j = e.i + 1; j < c.length && j <= e.i + maxBars; j++) {
+      const k = c[j];
+      const hitSl = e.dir === 1 ? k.low <= e.sl : k.high >= e.sl;
+      const hitTp = e.dir === 1 ? k.high >= e.tp : k.low <= e.tp;
+      if (hitSl) { r = -1; break; }
+      if (hitTp) { r = e.rr; break; }
+    }
+    if (r === null) { open++; continue; }
+    results.set(e.time, r);
+    const b = (byKind[e.kind] ??= { n: 0, w: 0 });
+    b.n++;
+    if (r > 0) { wins++; b.w++; } else losses++;
+    totalR += r;
+  }
+  const n = wins + losses;
+  return { n, wins, losses, open, winRate: n ? wins / n : 0, totalR, byKind, results };
 }

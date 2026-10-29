@@ -38,7 +38,7 @@ export interface SymbolInfo {
 
 export const SYMBOLS: SymbolInfo[] = [
   {
-    id: 'XAUUSD', label: 'XAU/USD', sub: 'Oltin · spot', digits: 2, unit: 'oz', demoBase: 4025, metal: true, spotCalibrate: true,
+    id: 'XAUUSD', label: 'XAU/USD', sub: 'Oltin', digits: 2, unit: 'oz', demoBase: 4025, metal: true, spotCalibrate: true,
     primary: { stream: 'XAUUSDT', market: 'futures', name: 'Binance XAUUSDT' },
     fallback: { stream: 'PAXGUSDT', market: 'spot', name: 'PAXG token (taxminiy)' },
   },
@@ -193,9 +193,22 @@ function ensureSpot(): Promise<void> {
   return spotFirst;
 }
 /** feed narxidan ayiriladigan qiymat (spotga moslash) */
-const basisOf = (sym: SymbolInfo) => (sym.spotCalibrate && !demo ? basisBy.get(feedOf(sym).stream) ?? 0 : 0);
+/**
+ * Narx rejimi. 'futures' (standart) — XAUUSDT perpetualning o'z narxi, ya'ni Binance Futures'da
+ * savdo qilinadigan aynan shu raqam. 'spot' — grafik spot oltinga (OANDA/TradingView) suriladi.
+ */
+export type PriceMode = 'futures' | 'spot';
+let priceMode: PriceMode = 'futures';
+export const getPriceMode = () => priceMode;
+export function setPriceMode(m: PriceMode) {
+  if (priceMode === m) return;
+  priceMode = m;
+  srcListeners.forEach((x) => x());
+}
+export const startSpotRef = () => ensureSpot();
+const basisOf = (sym: SymbolInfo) => (priceMode === 'spot' && sym.spotCalibrate && !demo ? basisBy.get(feedOf(sym).stream) ?? 0 : 0);
 const shift = (c: Candle, b: number): Candle => (b ? { ...c, open: c.open - b, high: c.high - b, low: c.low - b, close: c.close - b } : c);
-export const isCalibrated = (sym: SymbolInfo) => !!sym.spotCalibrate && !demo && basisBy.has(feedOf(sym).stream);
+export const isCalibrated = (sym: SymbolInfo) => priceMode === 'spot' && !!sym.spotCalibrate && !demo && basisBy.has(feedOf(sym).stream);
 export function stopSpot() {
   clearInterval(spotTimer);
 }
@@ -207,7 +220,7 @@ export async function fetchKlines(sym: SymbolInfo, tf: string, limit = 1000): Pr
       const cs = await restKlines(f, tf, limit);
       if (cs) {
         setActive(sym.id, f);
-        if (sym.spotCalibrate) {
+        if (sym.spotCalibrate && priceMode === 'spot') {
           // birinchi spot o'lchovini kutamiz (ko'pi bilan 5 s), keyin tarixni moslaymiz
           await Promise.race([ensureSpot(), new Promise((r) => setTimeout(r, 5000))]);
           const b = basisOf(sym);
@@ -308,6 +321,16 @@ export function subscribeBook(sym: SymbolInfo, cb: (b: Book) => void): () => voi
   return openWs(f.market, `/ws/${f.stream.toLowerCase()}@bookTicker`, (d) => {
     const b = basisOf(sym);
     if (d.b && d.a) cb({ bid: +d.b - b, ask: +d.a - b });
+  });
+}
+
+export interface MarkInfo { mark: number; index: number; funding: number; nextFunding: number }
+/** Futures: mark narx, indeks narx, funding stavkasi va keyingi funding vaqti (1 s) */
+export function subscribeMark(sym: SymbolInfo, cb: (m: MarkInfo) => void): () => void {
+  const f = feedOf(sym);
+  if (demo || f.market !== 'futures') return () => {};
+  return openWs('futures', `/ws/${f.stream.toLowerCase()}@markPrice@1s`, (d) => {
+    if (d.p) cb({ mark: +d.p, index: +d.i, funding: +d.r, nextFunding: +d.T });
   });
 }
 
