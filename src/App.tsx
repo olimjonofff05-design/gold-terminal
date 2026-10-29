@@ -4,7 +4,7 @@ import AnalysisPanel from './components/AnalysisPanel';
 import TradePanel from './components/TradePanel';
 import { analyze, killzoneSpans, trendOf } from './lib/analysis';
 import {
-  feedOf, fetchKlines, fmt, goldMarket, HTF, isDemo, onDemoChange, onSourceChange, PAXG_ID, subscribeBook, subscribeKline, subscribeTickers,
+  feedOf, fetchKlines, fmt, getSpotRef, isCalibrated, onSpotRef, goldMarket, HTF, isDemo, onDemoChange, onSourceChange, PAXG_ID, subscribeBook, subscribeKline, subscribeTickers,
   SYMBOLS, TF_SEC, TIMEFRAMES, usingFallback, type Book, type TF, type Tick,
 } from './lib/data';
 import { usePaper } from './lib/paper';
@@ -58,6 +58,8 @@ export default function App() {
 
   useEffect(() => onDemoChange(setDemo) as () => void, []);
   useEffect(() => onSourceChange(() => setSrcRev((x) => x + 1)) as () => void, []);
+  const [, setSpotRev] = useState(0);
+  useEffect(() => onSpotRef(() => setSpotRev((x) => x + 1)) as () => void, []);
   useEffect(() => {
     const id = setInterval(() => setClock(Date.now()), 30000);
     return () => clearInterval(id);
@@ -209,6 +211,8 @@ export default function App() {
   const paxg = ticks[PAXG_ID]?.price;
   const xau = sym.id === 'XAUUSD' && !fallback ? livePrice : ticks.XAUUSD && !usingFallback(SYMBOLS[0]) ? ticks.XAUUSD.price : 0;
   const premium = paxg && xau ? ((paxg - xau) / xau) * 100 : null;
+  const spotRef = getSpotRef();
+  const calibrated = isCalibrated(sym);
 
   return (
     <div className={`app view-${view}`}>
@@ -283,7 +287,12 @@ export default function App() {
             )}
           </div>
           <div className="src-line">
-            <span>Manba: <b>{demo ? 'demo (oflayn)' : feed.name}</b></span>
+            <span>Manba: <b>{demo ? 'demo (oflayn)' : feed.name}</b>{calibrated && ' · spotga moslangan'}</span>
+            {calibrated && spotRef && (
+              <span title="Perpetual kontrakt narxi spotdan funding va USDT/USD kursi tufayli farq qiladi. Bu farq har 15 soniyada oʻlchanib, grafik va narxlardan ayiriladi — natija TradingView (OANDA:XAUUSD) ga mos keladi.">
+                Spot: <b>{fmt(spotRef.spot, 2)}</b> · perp farqi <b className="gold">{spotRef.basis >= 0 ? '+' : ''}{fmt(spotRef.basis, 2)}</b>{!spotRef.ok && ' (eski)'}
+              </span>
+            )}
             {sym.id === 'XAUUSD' && premium !== null && (
               <span title="PAXG token narxining spot oltindan farqi. Eski versiya shu tokenni koʻrsatgani uchun TradingView bilan mos kelmagan.">
                 PAXG premium: <b className={Math.abs(premium) > 0.5 ? 'gold' : ''}>{premium >= 0 ? '+' : ''}{premium.toFixed(2)}%</b> ({fmt(paxg!, 2)})
@@ -317,7 +326,7 @@ export default function App() {
       </nav>
 
       <footer className="foot">
-        XAU/USD narxi Binance USDⓈ-M XAUUSDT perpetual kontraktidan olinadi — u spot oltinni kuzatadi va OANDA/FX brokerlar narxiga juda yaqin.
+        XAU/USD grafigi Binance XAUUSDT perpetual kontraktidan olinadi va har 15 soniyada spot oltin narxiga (gold-api.com) moslanadi — natija OANDA/TradingView bilan bir xil.
         Spot bozor dam olish kunlari yopiq, XAUUSDT esa 24/7 savdolanadi. Vaqtlar NY vaqti boʻyicha killzonalarga moslangan.
         Tahlil — ehtimollik vositasi, moliyaviy maslahat emas. Savdolar faqat demo hisobda.
       </footer>
