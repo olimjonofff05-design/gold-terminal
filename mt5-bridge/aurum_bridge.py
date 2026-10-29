@@ -24,7 +24,7 @@ except ImportError:  # pragma: no cover
     input("Chiqish uchun Enter...")
     sys.exit(1)
 
-VERSION = "1.0"
+VERSION = "1.1"
 PORT = 8765
 # Exness: Standard -> XAUUSDm, Standard Cent -> XAUUSDc, Pro/Raw/Zero -> XAUUSD; boshqa brokerlar: GOLD
 CANDIDATES = ["XAUUSDm", "XAUUSD", "XAUUSDc", "XAUUSD.", "XAUUSD#", "GOLD", "GOLDm", "XAUUSDz"]
@@ -49,7 +49,7 @@ def connect(path=None):
         return False
     acc = mt5.account_info()
     ti = mt5.terminal_info()
-    state["broker"] = (ti.company if ti else "") or ""
+    state["broker"] = (getattr(acc, "company", "") if acc else "") or (ti.company if ti else "") or ""
     state["server"] = (acc.server if acc else "") or ""
     state["login"] = acc.login if acc else 0
     log(f"MT5 ga ulandi: {state['broker']} · server {state['server']} · hisob {state['login']}")
@@ -69,6 +69,23 @@ def pick_symbol(wanted=None):
             mt5.symbol_select(s.name, True)
             return s.name
     return None
+
+
+def refresh_account():
+    """Foydalanuvchi MT5 da boshqa hisobga (masalan Exness) o'tsa — broker, server va simvolni qayta aniqlaymiz."""
+    acc = mt5.account_info()
+    if not acc:
+        return
+    if acc.login != state["login"] or acc.server != state["server"] or mt5.symbol_info(state["symbol"] or "") is None:
+        ti = mt5.terminal_info()
+        state["login"], state["server"] = acc.login, acc.server
+        state["broker"] = (acc.company if getattr(acc, "company", "") else (ti.company if ti else "")) or ""
+        sym = pick_symbol(ARGS.symbol if ARGS else None)
+        if sym:
+            state["symbol"] = sym
+        if not state["offset_fixed"]:
+            state["offset"] = 0
+        log(f"Hisob o'zgardi: {state['broker']} · server {state['server']} · hisob {state['login']} · simvol {state['symbol']}")
 
 
 def detect_offset():
@@ -140,6 +157,7 @@ class H(BaseHTTPRequestHandler):
                 if mt5.terminal_info() is None and not connect(ARGS.path):
                     return self._send(503, {"ok": False, "error": "MT5 ulanmagan"})
                 if u.path == "/health":
+                    refresh_account()
                     detect_offset()
                     return self._send(200, {
                         "ok": True, "version": VERSION, "symbol": state["symbol"], "broker": state["broker"],
@@ -152,6 +170,9 @@ class H(BaseHTTPRequestHandler):
                     return self._send(200, rates(tf, int(q.get("limit", "1000"))))
                 if u.path == "/tick":
                     t = tick()
+                    if not t or not t["bid"]:
+                        refresh_account()
+                        t = tick()
                     return self._send(200 if t else 503, t or {"error": "tick yo'q"})
             self._send(404, {"error": "not found"})
         except Exception as e:  # pragma: no cover
