@@ -24,7 +24,7 @@ except ImportError:  # pragma: no cover
     input("Chiqish uchun Enter...")
     sys.exit(1)
 
-VERSION = "1.0"
+VERSION = "1.2"
 PORT = 8765
 # Exness: Standard -> XAUUSDm, Standard Cent -> XAUUSDc, Pro/Raw/Zero -> XAUUSD; boshqa brokerlar: GOLD
 CANDIDATES = ["XAUUSDm", "XAUUSD", "XAUUSDc", "XAUUSD.", "XAUUSD#", "GOLD", "GOLDm", "XAUUSDz"]
@@ -42,14 +42,23 @@ def log(*a):
     print(time.strftime("%H:%M:%S"), *a, flush=True)
 
 
-def connect(path=None):
-    ok = mt5.initialize(path) if path else mt5.initialize()
+_last_try = [0.0]
+
+
+def connect(path=None, quiet=False):
+    """MT5 ga ulanish. Qayta urinishlar 5 soniyada bir martadan oshmaydi (so'rovlar osilib qolmasin)."""
+    if time.time() - _last_try[0] < 5:
+        return False
+    _last_try[0] = time.time()
+    kw = {"timeout": 4000}
+    ok = mt5.initialize(path, **kw) if path else mt5.initialize(**kw)
     if not ok:
-        log("MT5 ga ulanib bo'lmadi:", mt5.last_error(), "— MT5 ochiq va hisobga kirilganini tekshiring.")
+        if not quiet:
+            log("MT5 ga ulanib bo'lmadi:", mt5.last_error(), "— MT5 ochiq va hisobga kirilganini tekshiring.")
         return False
     acc = mt5.account_info()
     ti = mt5.terminal_info()
-    state["broker"] = (ti.company if ti else "") or ""
+    state["broker"] = (getattr(acc, "company", "") if acc else "") or (ti.company if ti else "") or ""
     state["server"] = (acc.server if acc else "") or ""
     state["login"] = acc.login if acc else 0
     log(f"MT5 ga ulandi: {state['broker']} · server {state['server']} · hisob {state['login']}")
@@ -69,6 +78,23 @@ def pick_symbol(wanted=None):
             mt5.symbol_select(s.name, True)
             return s.name
     return None
+
+
+def refresh_account():
+    """Foydalanuvchi MT5 da boshqa hisobga (masalan Exness) o'tsa — broker, server va simvolni qayta aniqlaymiz."""
+    acc = mt5.account_info()
+    if not acc:
+        return
+    if acc.login != state["login"] or acc.server != state["server"] or mt5.symbol_info(state["symbol"] or "") is None:
+        ti = mt5.terminal_info()
+        state["login"], state["server"] = acc.login, acc.server
+        state["broker"] = (acc.company if getattr(acc, "company", "") else (ti.company if ti else "")) or ""
+        sym = pick_symbol(ARGS.symbol if ARGS else None)
+        if sym:
+            state["symbol"] = sym
+        if not state["offset_fixed"]:
+            state["offset"] = 0
+        log(f"Hisob o'zgardi: {state['broker']} · server {state['server']} · hisob {state['login']} · simvol {state['symbol']}")
 
 
 def detect_offset():
@@ -113,6 +139,12 @@ class H(BaseHTTPRequestHandler):
     def log_message(self, *a):  # jim
         pass
 
+    def handle_one_request(self):
+        try:
+            super().handle_one_request()
+        except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError):
+            pass  # brauzer so'rovni bekor qildi — jim
+
     def _send(self, code, obj):
         body = json.dumps(obj).encode()
         self.send_response(code)
@@ -137,9 +169,10 @@ class H(BaseHTTPRequestHandler):
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
         try:
             with lock:
-                if mt5.terminal_info() is None and not connect(ARGS.path):
+                if mt5.terminal_info() is None and not connect(ARGS.path, quiet=True):
                     return self._send(503, {"ok": False, "error": "MT5 ulanmagan"})
                 if u.path == "/health":
+                    refresh_account()
                     detect_offset()
                     return self._send(200, {
                         "ok": True, "version": VERSION, "symbol": state["symbol"], "broker": state["broker"],
@@ -152,6 +185,9 @@ class H(BaseHTTPRequestHandler):
                     return self._send(200, rates(tf, int(q.get("limit", "1000"))))
                 if u.path == "/tick":
                     t = tick()
+                    if not t or not t["bid"]:
+                        refresh_account()
+                        t = tick()
                     return self._send(200 if t else 503, t or {"error": "tick yo'q"})
             self._send(404, {"error": "not found"})
         except Exception as e:  # pragma: no cover
@@ -171,7 +207,7 @@ def main():
     print(f"  AURUM · MT5 ko'prigi v{VERSION}")
     print("=" * 56)
     while not connect(ARGS.path):
-        time.sleep(5)
+        time.sleep(5.2)
     sym = pick_symbol(ARGS.symbol)
     if not sym:
         log("Oltin simvoli topilmadi. MT5 'Kotirovkalar' oynasida oltin nomini ko'ring va --symbol bilan bering.")
