@@ -93,7 +93,8 @@ const srcListeners = new Set<() => void>();
  * Bitta broker hisobida narx barcha qurilmalarda bir xil — sayt telefondagi MT5 bilan mos keladi.
  * Ko'prik faqat Broker rejimida tekshiriladi (boshqa paytda brauzer lokal tarmoq ruxsatini so'ramasin).
  */
-export const MT5_URL = 'http://127.0.0.1:8765';
+// sayt ko'prikning o'zidan ochilgan bo'lsa — bir xil manzil (brauzer bloklari ishlamaydi)
+export const MT5_URL = typeof location !== 'undefined' && location.port === '8765' ? '' : 'http://127.0.0.1:8765';
 export interface BridgeInfo { symbol: string; broker: string; server: string }
 let bridge: BridgeInfo | null = null;
 export const getBridge = () => bridge;

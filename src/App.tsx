@@ -83,7 +83,9 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(ui.theme ?? 'light');
   const [book, setBook] = useState<Book | null>(null);
   const [mode, setModeState] = useState<PriceMode>(() => {
-    const m: PriceMode = ui.mode === 'spot' || ui.mode === 'broker' ? ui.mode : 'futures';
+    // sayt MT5 ko'prigi orqali (127.0.0.1:8765) ochilgan bo'lsa — standart rejim Broker
+    const viaBridge = typeof location !== 'undefined' && location.port === '8765';
+    const m: PriceMode = ui.mode === 'spot' || ui.mode === 'broker' || ui.mode === 'futures' ? ui.mode : viaBridge ? 'broker' : 'futures';
     setPriceMode(m);
     return m;
   });

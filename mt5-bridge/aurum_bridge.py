@@ -11,6 +11,8 @@ Dastur faqat narxlarni O'QIYDI: savdo ochmaydi, hisobingizga hech narsa yozmaydi
 """
 import argparse
 import json
+import ssl
+import urllib.request
 import sys
 import threading
 import time
@@ -24,7 +26,8 @@ except ImportError:  # pragma: no cover
     input("Chiqish uchun Enter...")
     sys.exit(1)
 
-VERSION = "1.2"
+VERSION = "1.3"
+SITE = __import__("os").environ.get("AURUM_SITE", "https://gold-terminal-three.vercel.app")  # sayt shu manzildan 127.0.0.1:8765 orqali ochiladi
 PORT = 8765
 # Exness: Standard -> XAUUSDm, Standard Cent -> XAUUSDc, Pro/Raw/Zero -> XAUUSD; boshqa brokerlar: GOLD
 CANDIDATES = ["XAUUSDm", "XAUUSD", "XAUUSDc", "XAUUSD.", "XAUUSD#", "GOLD", "GOLDm", "XAUUSDz"]
@@ -135,6 +138,26 @@ def tick():
     }
 
 
+_site_cache = {}
+
+
+def proxy_site(path):
+    """Saytni ko'prik orqali beramiz: brauzer sayt va narxni bitta manzildan (127.0.0.1) oladi,
+    shuning uchun Chrome'ning lokal tarmoq bloki (Local Network Access) ishlamaydi."""
+    key = path or "/"
+    hit = _site_cache.get(key)
+    if hit and (key.startswith("/assets/") or time.time() - hit[2] < 300):
+        return hit
+    url = SITE + key
+    req = urllib.request.Request(url, headers={"User-Agent": "AURUM-bridge/" + VERSION})
+    with urllib.request.urlopen(req, timeout=15, context=ssl.create_default_context()) as r:
+        body = r.read()
+        ctype = r.headers.get("Content-Type", "application/octet-stream")
+    out = (ctype, body, time.time())
+    _site_cache[key] = out
+    return out
+
+
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a):  # jim
         pass
@@ -167,6 +190,17 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         u = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
+        if u.path not in ("/health", "/klines", "/tick"):
+            try:
+                ctype, body, _ = proxy_site(u.path)
+                self.send_response(200)
+                self.send_header("Content-Type", ctype)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            except Exception as e:
+                self._send(502, {"error": f"sayt yuklanmadi: {e}"})
+            return
         try:
             with lock:
                 if mt5.terminal_info() is None and not connect(ARGS.path, quiet=True):
@@ -189,7 +223,6 @@ class H(BaseHTTPRequestHandler):
                         refresh_account()
                         t = tick()
                     return self._send(200 if t else 503, t or {"error": "tick yo'q"})
-            self._send(404, {"error": "not found"})
         except Exception as e:  # pragma: no cover
             self._send(500, {"error": str(e)})
 
@@ -200,6 +233,7 @@ def main():
     p.add_argument("--symbol", help="Oltin simvoli (masalan XAUUSDm). Ko'rsatilmasa avtomatik topiladi.")
     p.add_argument("--port", type=int, default=PORT)
     p.add_argument("--path", help="terminal64.exe yo'li (bir nechta MT5 o'rnatilgan bo'lsa)")
+    p.add_argument("--no-browser", action="store_true", help="Saytni avtomatik ochmaslik")
     p.add_argument("--tz", type=float, help="Server vaqti farqi soatda (masalan 0 yoki 2). Odatda shart emas.")
     ARGS = p.parse_args()
 
@@ -221,7 +255,10 @@ def main():
     t = tick()
     log(f"Simvol: {sym} · Bid {t['bid'] if t else '—'} · Ask {t['ask'] if t else '—'}")
     srv = ThreadingHTTPServer(("127.0.0.1", ARGS.port), H)
-    log(f"Tayyor: http://127.0.0.1:{ARGS.port} — endi AURUM saytida 'Broker' rejimini tanlang.")
+    log(f"Tayyor! Saytni shu manzilda oching: http://127.0.0.1:{ARGS.port}  (Broker rejimi avtomatik yoqiladi)")
+    if not ARGS.no_browser:
+        import webbrowser
+        webbrowser.open(f"http://127.0.0.1:{ARGS.port}/")
     log("Bu oynani yopmang. To'xtatish uchun Ctrl+C.")
     try:
         srv.serve_forever()
