@@ -144,8 +144,10 @@ export default function AnalysisPanel({ a, digits, bt, btBusy, mtf, onUseSetup }
               <div><span>Range low</span><b>{F(a.fib.low)}</b></div>
             </>
           )}
-          {a.liquidity.slice(0, 8).map((l, i) => (
-            <div key={i}><span>{l.kind}</span><b className={l.kind === 'SSL' || l.kind === 'EQL' || l.kind === 'PDL' ? 'up' : 'down'}>{F(l.price)}</b></div>
+          {a.nyOpen !== null && <div><span>NY 00:00 Open</span><b className="gold">{F(a.nyOpen)}</b></div>}
+          {a.asia && <div><span>Osiyo range</span><b>{F(a.asia.low)} – {F(a.asia.high)}</b></div>}
+          {a.liquidity.slice(0, 10).map((l, i) => (
+            <div key={i}><span>{l.kind}</span><b className={l.kind.endsWith('L') && l.kind !== 'BSL' ? 'up' : 'down'}>{F(l.price)}</b></div>
           ))}
           <div><span>ATR 14</span><b>{F(a.atr)}</b></div>
           <div><span>RSI 14</span><b>{a.rsi.toFixed(1)}</b></div>
