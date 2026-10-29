@@ -85,7 +85,8 @@ export default function App() {
   const [mode, setModeState] = useState<PriceMode>(() => {
     // sayt MT5 ko'prigi orqali (127.0.0.1:8765) ochilgan bo'lsa — standart rejim Broker
     const viaBridge = typeof location !== 'undefined' && location.port === '8765';
-    const m: PriceMode = ui.mode === 'spot' || ui.mode === 'broker' || ui.mode === 'futures' ? ui.mode : viaBridge ? 'broker' : 'futures';
+    // ko'prik manzili aynan MT5 narxi uchun ochiladi — u yerda doim Broker rejimidan boshlaymiz
+    const m: PriceMode = viaBridge ? 'broker' : ui.mode === 'spot' || ui.mode === 'broker' || ui.mode === 'futures' ? ui.mode : 'futures';
     setPriceMode(m);
     return m;
   });
