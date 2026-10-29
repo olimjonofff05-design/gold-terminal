@@ -33,12 +33,13 @@ export interface SymbolInfo {
   unit: string;
   demoBase: number;
   metal?: boolean; // haqiqiy bozor soatlariga ega (oltin)
+  spotCalibrate?: boolean; // perp/token narxini spot oltin (OANDA/TradingView) ga moslash
 }
 
 export const SYMBOLS: SymbolInfo[] = [
   {
-    id: 'XAUUSD', label: 'XAU/USD', sub: 'Oltin · spot', digits: 2, unit: 'oz', demoBase: 4025, metal: true,
-    primary: { stream: 'XAUUSDT', market: 'futures', name: 'Binance XAUUSDT (spot oltin)' },
+    id: 'XAUUSD', label: 'XAU/USD', sub: 'Oltin · spot', digits: 2, unit: 'oz', demoBase: 4025, metal: true, spotCalibrate: true,
+    primary: { stream: 'XAUUSDT', market: 'futures', name: 'Binance XAUUSDT' },
     fallback: { stream: 'PAXGUSDT', market: 'spot', name: 'PAXG token (taxminiy)' },
   },
   { id: 'BTCUSD', label: 'BTC/USD', sub: 'Bitcoin', primary: { stream: 'BTCUSDT', market: 'spot', name: 'Binance spot' }, digits: 2, unit: 'BTC', demoBase: 80000 },
@@ -125,6 +126,80 @@ async function restKlines(f: Feed, tf: string, limit: number): Promise<Candle[] 
   return null;
 }
 
+// ---------------- spot calibration ----------------
+/**
+ * XAUUSDT perpetual spotni kuzatadi, lekin funding va USDT/USD kursi tufayli odatda
+ * spotdan $3–10 yuqori/past turadi (basis). TradingView'dagi OANDA:XAUUSD bilan bir xil
+ * raqam ko'rsatish uchun spot oltin narxini (gold-api.com, kalitsiz, CORS ochiq) har 15 soniyada
+ * olamiz va basis = feed_narx − spot ni hisoblab, barcha shamlar / tikerlar / bid-ask dan ayiramiz.
+ * Bozor yopiq paytda (dam olish) spot muzlaydi — basis ham muzlatiladi.
+ */
+const SPOT_URL = 'https://api.gold-api.com/price/XAU';
+export interface SpotRef { spot: number; feedPx: number; basis: number; at: number; ok: boolean }
+let spotRef: SpotRef | null = null;
+const basisBy = new Map<string, number>(); // feed.stream -> smoothed basis
+const spotListeners = new Set<() => void>();
+export const getSpotRef = () => spotRef;
+export function onSpotRef(fn: () => void) {
+  spotListeners.add(fn);
+  return () => spotListeners.delete(fn);
+}
+async function lastPrice(f: Feed): Promise<number | null> {
+  const url = f.market === 'futures'
+    ? `https://fapi.binance.com/fapi/v1/ticker/price?symbol=${f.stream}`
+    : `https://api.binance.com/api/v3/ticker/price?symbol=${f.stream}`;
+  try {
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    const j = await r.json();
+    return +j.price || null;
+  } catch {
+    return null;
+  }
+}
+let spotTimer = 0;
+let spotFirst: Promise<void> | null = null;
+async function pollSpot() {
+  const sym = SYMBOLS.find((x) => x.spotCalibrate);
+  if (!sym || demo) return;
+  const f = feedOf(sym);
+  try {
+    const [sr, fp] = await Promise.all([
+      fetch(SPOT_URL).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      lastPrice(f),
+    ]);
+    const spot = sr ? +sr.price : NaN;
+    if (!isFinite(spot) || !spot || !fp) {
+      if (spotRef) spotRef = { ...spotRef, ok: false };
+      return;
+    }
+    const raw = fp - spot;
+    const prev = basisBy.get(f.stream);
+    // spot yopiq bo'lsa basisni yangilamaymiz; aks holda silliqlash (sakrashlarsiz)
+    const open = goldMarket().open;
+    const b = prev === undefined ? raw : open ? prev * 0.7 + raw * 0.3 : prev;
+    // aql chegarasi: 2% dan katta farq — noto'g'ri ma'lumot, e'tiborsiz
+    if (Math.abs(raw / spot) < 0.02) basisBy.set(f.stream, b);
+    spotRef = { spot, feedPx: fp, basis: basisBy.get(f.stream) ?? 0, at: Date.now(), ok: true };
+  } finally {
+    spotListeners.forEach((x) => x());
+  }
+}
+function ensureSpot(): Promise<void> {
+  if (!spotFirst) {
+    spotFirst = pollSpot();
+    spotTimer = window.setInterval(pollSpot, 15000);
+  }
+  return spotFirst;
+}
+/** feed narxidan ayiriladigan qiymat (spotga moslash) */
+const basisOf = (sym: SymbolInfo) => (sym.spotCalibrate && !demo ? basisBy.get(feedOf(sym).stream) ?? 0 : 0);
+const shift = (c: Candle, b: number): Candle => (b ? { ...c, open: c.open - b, high: c.high - b, low: c.low - b, close: c.close - b } : c);
+export const isCalibrated = (sym: SymbolInfo) => !!sym.spotCalibrate && !demo && basisBy.has(feedOf(sym).stream);
+export function stopSpot() {
+  clearInterval(spotTimer);
+}
+
 export async function fetchKlines(sym: SymbolInfo, tf: string, limit = 1000): Promise<Candle[]> {
   if (!demo) {
     const order = [feedOf(sym), sym.primary, sym.fallback].filter((x, i, a): x is Feed => !!x && a.indexOf(x) === i);
@@ -132,6 +207,12 @@ export async function fetchKlines(sym: SymbolInfo, tf: string, limit = 1000): Pr
       const cs = await restKlines(f, tf, limit);
       if (cs) {
         setActive(sym.id, f);
+        if (sym.spotCalibrate) {
+          // birinchi spot o'lchovini kutamiz (ko'pi bilan 5 s), keyin tarixni moslaymiz
+          await Promise.race([ensureSpot(), new Promise((r) => setTimeout(r, 5000))]);
+          const b = basisOf(sym);
+          return b ? cs.map((c) => shift(c, b)) : cs;
+        }
         return cs;
       }
     }
@@ -176,7 +257,7 @@ export function subscribeKline(sym: SymbolInfo, tf: string, cb: (c: Candle) => v
   return openWs(f.market, `/ws/${f.stream.toLowerCase()}@kline_${tf}`, (d) => {
     const k = d.k;
     if (!k) return;
-    cb({ time: Math.floor(k.t / 1000), open: +k.o, high: +k.h, low: +k.l, close: +k.c, volume: +k.v });
+    cb(shift({ time: Math.floor(k.t / 1000), open: +k.o, high: +k.h, low: +k.l, close: +k.c, volume: +k.v }, basisOf(sym)));
   });
 }
 
@@ -198,7 +279,14 @@ export function subscribeTickers(cb: (id: string, t: Tick) => void): () => void 
       openWs(m, `/stream?streams=${streams}`, (msg) => {
         const d = msg.data;
         if (!d) return;
-        for (const x of g) if (x.feed.stream === d.s) cb(x.id, { price: +d.c, open: +d.o, change: ((+d.c - +d.o) / +d.o) * 100 });
+        for (const x of g) {
+          if (x.feed.stream !== d.s) continue;
+          const sym = SYMBOLS.find((q) => q.id === x.id);
+          const b = sym ? basisOf(sym) : 0;
+          const c = +d.c - b;
+          const o = +d.o - b;
+          cb(x.id, { price: c, open: o, change: ((c - o) / o) * 100 });
+        }
       }),
     );
   });
@@ -218,7 +306,8 @@ export function subscribeBook(sym: SymbolInfo, cb: (b: Book) => void): () => voi
   }
   const f = feedOf(sym);
   return openWs(f.market, `/ws/${f.stream.toLowerCase()}@bookTicker`, (d) => {
-    if (d.b && d.a) cb({ bid: +d.b, ask: +d.a });
+    const b = basisOf(sym);
+    if (d.b && d.a) cb({ bid: +d.b - b, ask: +d.a - b });
   });
 }
 
