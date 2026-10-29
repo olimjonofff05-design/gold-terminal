@@ -26,7 +26,7 @@ except ImportError:  # pragma: no cover
     input("Chiqish uchun Enter...")
     sys.exit(1)
 
-VERSION = "1.3"
+VERSION = "1.3.1"
 SITE = __import__("os").environ.get("AURUM_SITE", "https://gold-terminal-three.vercel.app")  # sayt shu manzildan 127.0.0.1:8765 orqali ochiladi
 PORT = 8765
 # Exness: Standard -> XAUUSDm, Standard Cent -> XAUUSDc, Pro/Raw/Zero -> XAUUSD; boshqa brokerlar: GOLD
@@ -146,10 +146,10 @@ def proxy_site(path):
     shuning uchun Chrome'ning lokal tarmoq bloki (Local Network Access) ishlamaydi."""
     key = path or "/"
     hit = _site_cache.get(key)
-    if hit and (key.startswith("/assets/") or time.time() - hit[2] < 300):
+    if hit and (key.startswith("/assets/") or time.time() - hit[2] < 30):
         return hit
-    url = SITE + key
-    req = urllib.request.Request(url, headers={"User-Agent": "AURUM-bridge/" + VERSION})
+    url = SITE + key + ("" if key.startswith("/assets/") else f"?_={int(time.time())}")
+    req = urllib.request.Request(url, headers={"User-Agent": "AURUM-bridge/" + VERSION, "Cache-Control": "no-cache", "Pragma": "no-cache"})
     with urllib.request.urlopen(req, timeout=15, context=ssl.create_default_context()) as r:
         body = r.read()
         ctype = r.headers.get("Content-Type", "application/octet-stream")
