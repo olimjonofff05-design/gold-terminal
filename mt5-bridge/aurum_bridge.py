@@ -24,7 +24,7 @@ except ImportError:  # pragma: no cover
     input("Chiqish uchun Enter...")
     sys.exit(1)
 
-VERSION = "1.1"
+VERSION = "1.2"
 PORT = 8765
 # Exness: Standard -> XAUUSDm, Standard Cent -> XAUUSDc, Pro/Raw/Zero -> XAUUSD; boshqa brokerlar: GOLD
 CANDIDATES = ["XAUUSDm", "XAUUSD", "XAUUSDc", "XAUUSD.", "XAUUSD#", "GOLD", "GOLDm", "XAUUSDz"]
@@ -42,10 +42,19 @@ def log(*a):
     print(time.strftime("%H:%M:%S"), *a, flush=True)
 
 
-def connect(path=None):
-    ok = mt5.initialize(path) if path else mt5.initialize()
+_last_try = [0.0]
+
+
+def connect(path=None, quiet=False):
+    """MT5 ga ulanish. Qayta urinishlar 5 soniyada bir martadan oshmaydi (so'rovlar osilib qolmasin)."""
+    if time.time() - _last_try[0] < 5:
+        return False
+    _last_try[0] = time.time()
+    kw = {"timeout": 4000}
+    ok = mt5.initialize(path, **kw) if path else mt5.initialize(**kw)
     if not ok:
-        log("MT5 ga ulanib bo'lmadi:", mt5.last_error(), "— MT5 ochiq va hisobga kirilganini tekshiring.")
+        if not quiet:
+            log("MT5 ga ulanib bo'lmadi:", mt5.last_error(), "— MT5 ochiq va hisobga kirilganini tekshiring.")
         return False
     acc = mt5.account_info()
     ti = mt5.terminal_info()
@@ -130,6 +139,12 @@ class H(BaseHTTPRequestHandler):
     def log_message(self, *a):  # jim
         pass
 
+    def handle_one_request(self):
+        try:
+            super().handle_one_request()
+        except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError):
+            pass  # brauzer so'rovni bekor qildi — jim
+
     def _send(self, code, obj):
         body = json.dumps(obj).encode()
         self.send_response(code)
@@ -154,7 +169,7 @@ class H(BaseHTTPRequestHandler):
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
         try:
             with lock:
-                if mt5.terminal_info() is None and not connect(ARGS.path):
+                if mt5.terminal_info() is None and not connect(ARGS.path, quiet=True):
                     return self._send(503, {"ok": False, "error": "MT5 ulanmagan"})
                 if u.path == "/health":
                     refresh_account()
@@ -192,7 +207,7 @@ def main():
     print(f"  AURUM · MT5 ko'prigi v{VERSION}")
     print("=" * 56)
     while not connect(ARGS.path):
-        time.sleep(5)
+        time.sleep(5.2)
     sym = pick_symbol(ARGS.symbol)
     if not sym:
         log("Oltin simvoli topilmadi. MT5 'Kotirovkalar' oynasida oltin nomini ko'ring va --symbol bilan bering.")
