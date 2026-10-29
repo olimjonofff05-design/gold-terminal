@@ -4,6 +4,7 @@ XAU/USD va kripto juftliklari uchun real vaqt tahlil terminali.
 
 ## Imkoniyatlar
 - **Real vaqt grafik** (Binance WebSocket): XAU/USD — **Binance XAUUSDT perpetual** (spot oltinni kuzatadi, TradingView OANDA:XAUUSD ga mos), BTC, ETH, SOL, BNB, XRP · 1m–1d
+- **3 xil narx rejimi**: Fyuchers (Binance XAUUSDT), Spot (OANDA/TradingView ga mos), **Broker · MT5** — [MT5 ko'prigi](mt5-bridge/README.md) orqali Exness va boshqa MT5 brokerlarning aniq narxi (telefondagi MT5 bilan bir xil); ko'priksiz — qo'lda kalibrlash
 - **Bid / Ask** (SOTISH / SOTIB OLISH), spred, spot oltin bozor soatlari (ochiq/yopiq), PAXG premium ko'rsatkichi
 - **Och va qorong'i mavzu** ("banknota qog'ozi" / "seyf")
 - **ICT tahlil**: BOS / CHoCH, Fair Value Gap, Order Block, BSL/SSL, EQH/EQL, PDH/PDL, Osiyo range (AsH/AsL), NY 00:00 Midnight Open, likvidlik sweep, NY vaqti bo'yicha (DST bilan) killzonalar va grafikda killzone soyalari
