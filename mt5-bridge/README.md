@@ -13,8 +13,9 @@ Bitta broker hisobida narx barcha qurilmalarda bir xil bo'lgani uchun saytdagi g
 1. **Exness MT5 ni o'rnating**: Exness shaxsiy kabinetidan "MetaTrader 5" ni yuklab oling.
    Telefoningizdagi **o'sha hisob** bilan kiring (login, parol, server bir xil).
    "Kotirovkalar" (Market Watch) oynasida oltin ko'rinishini tekshiring. Standard hisobda u odatda `XAUUSDm` deb ataladi.
-2. **Python o'rnating**: <https://www.python.org/downloads/> dan Python 3.12 (64-bit) ni yuklang.
-   O'rnatishda **"Add python.exe to PATH"** katagini albatta belgilang.
+2. **Python** — `start.bat` o'zi o'rnatadi (Windows'ning `winget` vositasi orqali, Python 3.12).
+   Agar winget bo'lmasa: <https://www.python.org/downloads/> dan Python 3.12 (64-bit) ni o'rnating, **"Add python.exe to PATH"** ni belgilang.
+   MT5 topilmasa, `start.bat` MetaQuotes'ning rasmiy o'rnatuvchisini ham ochadi — o'rnatgach Exness serveriga kiring.
 3. **Ko'prikni yuklab oling**: shu papkadagi ikkita faylni (`aurum_bridge.py` va `start.bat`)
    bitta papkaga saqlang, masalan `C:\AURUM`.
    (GitHub'da repo sahifasidagi "Code → Download ZIP" orqali ham bo'ladi. ZIP ichidan `mt5-bridge` papkasini oling.)
