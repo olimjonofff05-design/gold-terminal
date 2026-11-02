@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Holatni olish (bot-data branchi)
         env:
@@ -41,7 +41,7 @@ jobs:
           # bu branch uchun Vercel deploy qilmasin
           echo '{ "git": { "deploymentEnabled": false } }' > state/vercel.json
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm

@@ -186,12 +186,19 @@ async function auto(run: RunState) {
       await JOBS[j](run);
     } catch (e) {
       log(`${j} xato:`, (e as Error).stack ?? e);
+      process.exitCode = 1; // qolgan ishlar bajariladi, lekin GitHub Actions'da natija qizil bo'ladi
     }
     saveRun(run);
   }
 }
 
 const cmd = process.argv[2] ?? 'auto';
+// Kalitsiz bot jim ishlab, hech narsa yubormaydi — buni darhol va aniq aytamiz
+const missing = DRY ? [] : ['TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID', 'GEMINI_API_KEY', 'FRED_API_KEY'].filter((k) => !process.env[k]?.trim());
+if (missing.length) {
+  console.error(`Kalitlar topilmadi: ${missing.join(', ')}. GitHub: Settings → Secrets and variables → Actions → Repository secrets.`);
+  process.exit(1);
+}
 const run = loadRun();
 if (cmd === 'auto') await auto(run);
 else if (JOBS[cmd]) {
