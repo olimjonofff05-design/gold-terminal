@@ -1,0 +1,226 @@
+{
+ "date": "2026-11-02",
+ "at": 1793605820,
+ "source": "Yahoo GC=F (spotga moslangan)",
+ "price": 3900.600098,
+ "changePct": -3.3,
+ "atrD1": 78.31420815300685,
+ "atrH1": 15.11468580839026,
+ "bias": "SHORT",
+ "prob": 64,
+ "score": -48,
+ "factors": [
+  {
+   "key": "d1",
+   "label": "D1 struktura va EMA",
+   "weight": 25,
+   "value": -1,
+   "note": "kunlik trend pastga"
+  },
+  {
+   "key": "h4",
+   "label": "H4 struktura",
+   "weight": 20,
+   "value": -1,
+   "note": "H4 da past cho'qqilar sindirilyapti"
+  },
+  {
+   "key": "h1",
+   "label": "H1 konfluens",
+   "weight": 15,
+   "value": -0.53,
+   "note": "H1 skor -53"
+  },
+  {
+   "key": "dxy",
+   "label": "Dollar (5 kun)",
+   "weight": 10,
+   "value": 0.22067327985623164,
+   "note": "DXY 5 kunda -0.22%"
+  },
+  {
+   "key": "pd",
+   "label": "Premium / Discount (D1)",
+   "weight": 10,
+   "value": 1,
+   "note": "narx kunlik diapazonning arzon qismida (-71%)"
+  },
+  {
+   "key": "cot",
+   "label": "COT (fondlar pozitsiyasi)",
+   "weight": 5,
+   "value": 0,
+   "note": "fondlar long pozitsiyasi 3 yillik diapazonning 39% ida"
+  }
+ ],
+ "notes": [],
+ "events": [
+  {
+   "title": "ISM Manufacturing PMI",
+   "time": 1793631600,
+   "impact": "Medium",
+   "forecast": "54.5",
+   "previous": "54.5"
+  }
+ ],
+ "zones": [
+  {
+   "lo": 3968.8002933125,
+   "hi": 4039.8002933125,
+   "score": 7,
+   "tags": [
+    "H1 bearish FVG",
+    "H1 bearish OB",
+    "3975 yumaloq",
+    "4000 yumaloq",
+    "H4 OTE",
+    "4025 yumaloq",
+    "H1 BSL (stoplar)"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 4046.70019565625,
+   "hi": 4051.70019565625,
+   "score": 3,
+   "tags": [
+    "H4 bearish FVG",
+    "4050 yumaloq"
+   ],
+   "strength": "o'rta",
+   "side": 1
+  },
+  {
+   "lo": 4085.90039096875,
+   "hi": 4148.600098,
+   "score": 11.5,
+   "tags": [
+    "H4 BSL (stoplar)",
+    "D1 bearish FVG",
+    "haftalik high",
+    "4100 yumaloq",
+    "H4 bearish FVG",
+    "H4 bearish OB",
+    "4125 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 3898.900146828125,
+   "hi": 3900,
+   "score": 4,
+   "tags": [
+    "NY ochilishi",
+    "PDH",
+    "3900 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  },
+  {
+   "lo": 3883.20019565625,
+   "hi": 3889.600098,
+   "score": 4,
+   "tags": [
+    "H1 bullish FVG",
+    "Osiyo low",
+    "PDL"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  },
+  {
+   "lo": 3868.000244484375,
+   "hi": 3868.000244484375,
+   "score": 5,
+   "tags": [
+    "H1 SSL (stoplar)",
+    "H4 SSL (stoplar)",
+    "haftalik low"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  }
+ ],
+ "plans": [
+  {
+   "dir": -1,
+   "main": true,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 3968.8002933125,
+    "hi": 4039.8002933125,
+    "score": 7,
+    "tags": [
+     "H1 bearish FVG",
+     "H1 bearish OB",
+     "3975 yumaloq",
+     "4000 yumaloq",
+     "H4 OTE",
+     "4025 yumaloq",
+     "H1 BSL (stoplar)"
+    ],
+    "strength": "kuchli",
+    "side": 1
+   },
+   "entry": 4004.3002933125,
+   "sl": 4043.5789647645975,
+   "tp1": 3900.600098,
+   "tp2": 3868.000244484375,
+   "tp1Tag": "hozirgi narx",
+   "tp2Tag": "H1 SSL (stoplar)",
+   "rr1": 2.6,
+   "rr2": 3.5
+  },
+  {
+   "dir": 1,
+   "main": false,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 3898.900146828125,
+    "hi": 3900,
+    "score": 4,
+    "tags": [
+     "NY ochilishi",
+     "PDH",
+     "3900 yumaloq"
+    ],
+    "strength": "kuchli",
+    "side": -1
+   },
+   "entry": 3899.4500734140624,
+   "sl": 3887.35832476735,
+   "tp1": 3923.6335707074873,
+   "tp2": 3968.8002933125,
+   "tp1Tag": "2R",
+   "tp2Tag": "H1 bearish FVG",
+   "rr1": 2,
+   "rr2": 5.7
+  }
+ ],
+ "invalid": {
+  "price": 4085.90039096875,
+  "text": "H4 shami oxirgi H4 cho'qqisidan yuqorida yopilsa, short ssenariy bekor"
+ },
+ "nyOpen": 3898.900146828125,
+ "pdh": 3899.8002933125,
+ "pdl": 3889.600098,
+ "macro": {
+  "realYield": null,
+  "nominal": null,
+  "dxy": {
+   "last": 101.73500061035156,
+   "prev5": 101.95999908447266,
+   "date": "2026-11-02"
+  },
+  "dxySource": "DXY"
+ },
+ "cot": {
+  "date": "2026-10-27",
+  "net": 105562,
+  "netPrev": 104206,
+  "index3y": 38.617712452597466
+ }
+}

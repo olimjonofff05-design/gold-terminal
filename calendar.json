@@ -1,0 +1,236 @@
+{
+ "at": 1793605820,
+ "events": [
+  {
+   "title": "Daylight Saving Time Shift",
+   "time": 1793516400,
+   "impact": "Holiday",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "Final Manufacturing PMI",
+   "time": 1793630700,
+   "impact": "Low",
+   "forecast": "56.0",
+   "previous": "56.0"
+  },
+  {
+   "title": "ISM Manufacturing PMI",
+   "time": 1793631600,
+   "impact": "Medium",
+   "forecast": "54.5",
+   "previous": "54.5"
+  },
+  {
+   "title": "Construction Spending m/m",
+   "time": 1793631600,
+   "impact": "Low",
+   "forecast": "0.4%",
+   "previous": "0.9%"
+  },
+  {
+   "title": "ISM Manufacturing Prices",
+   "time": 1793631600,
+   "impact": "Low",
+   "forecast": "77.2",
+   "previous": "77.9"
+  },
+  {
+   "title": "Loan Officer Survey",
+   "time": 1793646180,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "JOLTS Job Openings",
+   "time": 1793718000,
+   "impact": "Medium",
+   "forecast": "7.11M",
+   "previous": "7.08M"
+  },
+  {
+   "title": "Factory Orders m/m",
+   "time": 1793718000,
+   "impact": "Low",
+   "forecast": "1.2%",
+   "previous": "0.1%"
+  },
+  {
+   "title": "RCM/TIPP Economic Optimism",
+   "time": 1793718600,
+   "impact": "Low",
+   "forecast": "46.2",
+   "previous": "46.8"
+  },
+  {
+   "title": "Omdia Total Vehicle Sales",
+   "time": 1793718900,
+   "impact": "Low",
+   "forecast": "15.9M",
+   "previous": "16.0M"
+  },
+  {
+   "title": "Congressional Elections",
+   "time": 1793718960,
+   "impact": "High",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "API Weekly Statistical Bulletin",
+   "time": 1793741400,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "ADP Non-Farm Employment Change",
+   "time": 1793798100,
+   "impact": "Low",
+   "forecast": "68K",
+   "previous": "90K"
+  },
+  {
+   "title": "Trade Balance",
+   "time": 1793799000,
+   "impact": "Low",
+   "forecast": "-107.9B",
+   "previous": "-105.6B"
+  },
+  {
+   "title": "Final Services PMI",
+   "time": 1793803500,
+   "impact": "Low",
+   "forecast": "57.9",
+   "previous": "57.9"
+  },
+  {
+   "title": "ISM Services PMI",
+   "time": 1793804400,
+   "impact": "Medium",
+   "forecast": "54.9",
+   "previous": "54.9"
+  },
+  {
+   "title": "Crude Oil Inventories",
+   "time": 1793806200,
+   "impact": "Low",
+   "forecast": "",
+   "previous": "-1.9M"
+  },
+  {
+   "title": "Challenger Job Cuts y/y",
+   "time": 1793874600,
+   "impact": "Low",
+   "forecast": "",
+   "previous": "-19.9%"
+  },
+  {
+   "title": "Unemployment Claims",
+   "time": 1793885400,
+   "impact": "Medium",
+   "forecast": "197K",
+   "previous": "194K"
+  },
+  {
+   "title": "Prelim Nonfarm Productivity q/q",
+   "time": 1793885400,
+   "impact": "Low",
+   "forecast": "2.8%",
+   "previous": "1.4%"
+  },
+  {
+   "title": "Prelim Unit Labor Costs q/q",
+   "time": 1793885400,
+   "impact": "Low",
+   "forecast": "0.3%",
+   "previous": "1.3%"
+  },
+  {
+   "title": "FOMC Member Hammack Speaks",
+   "time": 1793886600,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "FOMC Member Barkin Speaks",
+   "time": 1793887800,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "Natural Gas Storage",
+   "time": 1793892600,
+   "impact": "Low",
+   "forecast": "",
+   "previous": "80B"
+  },
+  {
+   "title": "FOMC Member Williams Speaks",
+   "time": 1793957400,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "Average Hourly Earnings m/m",
+   "time": 1793971800,
+   "impact": "High",
+   "forecast": "0.3%",
+   "previous": "0.1%"
+  },
+  {
+   "title": "Non-Farm Employment Change",
+   "time": 1793971800,
+   "impact": "High",
+   "forecast": "63K",
+   "previous": "29K"
+  },
+  {
+   "title": "Unemployment Rate",
+   "time": 1793971800,
+   "impact": "High",
+   "forecast": "4.2%",
+   "previous": "4.2%"
+  },
+  {
+   "title": "FOMC Member Musalem Speaks",
+   "time": 1793974200,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "Prelim UoM Consumer Sentiment",
+   "time": 1793977200,
+   "impact": "Medium",
+   "forecast": "47.8",
+   "previous": "46.3"
+  },
+  {
+   "title": "Prelim UoM Inflation Expectations",
+   "time": 1793977200,
+   "impact": "Medium",
+   "forecast": "",
+   "previous": "4.7%"
+  },
+  {
+   "title": "FOMC Member Bowman Speaks",
+   "time": 1793985300,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "Consumer Credit m/m",
+   "time": 1793995200,
+   "impact": "Low",
+   "forecast": "12.0B",
+   "previous": "8.3B"
+  }
+ ]
+}
