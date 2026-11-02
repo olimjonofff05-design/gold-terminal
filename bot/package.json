@@ -1,0 +1,15 @@
+{
+  "name": "aurum-bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "auto": "tsx src/main.ts auto",
+    "job": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "~5.6.2"
+  }
+}

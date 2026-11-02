@@ -1,0 +1,73 @@
+# AURUM Telegram boti: har 15 daqiqada vaqti kelgan ishlarni bajaradi (bot/src/main.ts → auto).
+# Holat (brif tarixi, statistika, yuborilgan alertlar) `bot-data` branchida saqlanadi — sayt ham shu yerdan o'qiydi.
+# Kalitlar: Settings → Secrets and variables → Actions:
+#   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, GEMINI_API_KEY, FRED_API_KEY
+name: AURUM bot
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * 0-5'
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Ish: auto, morning, ny, news, alerts, events, preview, weekly'
+        default: auto
+        required: true
+
+concurrency:
+  group: aurum-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Holatni olish (bot-data branchi)
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          URL="https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$URL" bot-data >/dev/null; then
+            git clone --quiet --depth 1 --branch bot-data "$URL" state
+          else
+            mkdir state && git -C state init -q -b bot-data && git -C state remote add origin "$URL"
+          fi
+          # bu branch uchun Vercel deploy qilmasin
+          echo '{ "git": { "deploymentEnabled": false } }' > state/vercel.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: bot/package-lock.json
+
+      - run: npm ci --no-audit --no-fund
+        working-directory: bot
+
+      - name: Botni ishga tushirish
+        working-directory: bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          STATE_DIR: ${{ github.workspace }}/state
+        run: npx tsx src/main.ts ${{ inputs.job || 'auto' }}
+
+      - name: Holatni saqlash
+        if: always()
+        working-directory: state
+        run: |
+          git config user.name "aurum-bot"
+          git config user.email "aurum-bot@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -q -m "bot holati $(date -u +%F' '%H:%M)"
+            git push -q origin bot-data
+          fi

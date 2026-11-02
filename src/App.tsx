@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Chart, { type Layers, type Theme } from './components/Chart';
 import AnalysisPanel from './components/AnalysisPanel';
 import TradePanel from './components/TradePanel';
+import BriefPanel from './components/BriefPanel';
 import { analyze, evalMoves, killzoneSpans, trendOf } from './lib/analysis';
 import {
   feedOf, fetchKlines, fmt, getBridge, getBrokerCal, setBrokerCal, startBridgeProbe, getSpotRef, isCalibrated, onSpotRef, setPriceMode, startSpotRef, subscribeMark, type MarkInfo, type PriceMode, goldMarket, HTF, isDemo, onDemoChange, onSourceChange, subscribeBook, subscribeKline, subscribeTickers,
@@ -109,6 +110,8 @@ export default function App() {
   const [demo, setDemo] = useState(isDemo());
   const [prefill, setPrefill] = useState<{ setup: Setup; n: number } | null>(null);
   const [view, setView] = useState<'chart' | 'ai' | 'trade'>('chart');
+  const [briefOpen, setBriefOpen] = useState(false);
+  const closeBrief = useCallback(() => setBriefOpen(false), []);
 
   const sym = SYMBOLS.find((s) => s.id === symId) ?? SYMBOLS[0];
   const dataKey = `${sym.id}-${tf}`;
@@ -326,6 +329,7 @@ export default function App() {
           })}
         </div>
         <div className="top-r">
+          <button className="btn xs" onClick={() => setBriefOpen(true)} title="Bugungi bias, zonalar, rejalar, kalendar va lot kalkulyatori">📋 Brif</button>
           {feed.market === 'mt5' ? (
             <span className="live" title={`${bridge?.broker ?? ''} · ${bridge?.server ?? ''}`}><i />MT5 LIVE</span>
           ) : (
@@ -435,6 +439,7 @@ export default function App() {
       </footer>
 
       {paper.toast && <div className="toast">{paper.toast}</div>}
+      <BriefPanel open={briefOpen} onClose={closeBrief} price={livePrice} />
     </div>
   );
 }
