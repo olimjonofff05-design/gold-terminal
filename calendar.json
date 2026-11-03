@@ -1,5 +1,5 @@
 {
- "at": 1793640481,
+ "at": 1793664100,
  "events": [
   {
    "title": "Daylight Saving Time Shift",
@@ -38,7 +38,7 @@
   },
   {
    "title": "Loan Officer Survey",
-   "time": 1793646180,
+   "time": 1793646000,
    "impact": "Low",
    "forecast": "",
    "previous": ""
@@ -47,7 +47,7 @@
    "title": "JOLTS Job Openings",
    "time": 1793718000,
    "impact": "Medium",
-   "forecast": "7.11M",
+   "forecast": "7.15M",
    "previous": "7.08M"
   },
   {
@@ -68,7 +68,7 @@
    "title": "Omdia Total Vehicle Sales",
    "time": 1793718900,
    "impact": "Low",
-   "forecast": "15.9M",
+   "forecast": "15.8M",
    "previous": "16.0M"
   },
   {
@@ -89,7 +89,7 @@
    "title": "ADP Non-Farm Employment Change",
    "time": 1793798100,
    "impact": "Low",
-   "forecast": "68K",
+   "forecast": "67K",
    "previous": "90K"
   },
   {
@@ -110,7 +110,7 @@
    "title": "ISM Services PMI",
    "time": 1793804400,
    "impact": "Medium",
-   "forecast": "54.9",
+   "forecast": "54.8",
    "previous": "54.9"
   },
   {
@@ -187,7 +187,7 @@
    "title": "Non-Farm Employment Change",
    "time": 1793971800,
    "impact": "High",
-   "forecast": "63K",
+   "forecast": "65K",
    "previous": "29K"
   },
   {
@@ -208,7 +208,7 @@
    "title": "Prelim UoM Consumer Sentiment",
    "time": 1793977200,
    "impact": "Medium",
-   "forecast": "47.8",
+   "forecast": "48.1",
    "previous": "46.3"
   },
   {
@@ -229,7 +229,7 @@
    "title": "Consumer Credit m/m",
    "time": 1793995200,
    "impact": "Low",
-   "forecast": "12.0B",
+   "forecast": "13.4B",
    "previous": "8.3B"
   }
  ]
