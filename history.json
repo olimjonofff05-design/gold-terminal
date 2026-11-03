@@ -1,0 +1,26 @@
+[
+ {
+  "date": "2026-11-02",
+  "bias": "SHORT",
+  "prob": 62,
+  "biasOk": false,
+  "close": 3950.400146828125,
+  "ref": 3895.800049171875,
+  "plans": [
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 3897.9000245859374,
+    "result": "SL",
+    "r": -1
+   },
+   {
+    "dir": 1,
+    "main": false,
+    "entry": 3883.300049171875,
+    "result": "ishga tushmadi",
+    "r": 0
+   }
+  ]
+ }
+]
