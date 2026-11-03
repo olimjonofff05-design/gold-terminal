@@ -1,14 +1,14 @@
 {
  "date": "2026-11-03",
- "at": 1793687443,
+ "at": 1793716593,
  "source": "Yahoo GC=F (spotga moslangan)",
- "price": 3921.600098,
+ "price": 3949.399902,
  "changePct": 1.82,
- "atrD1": 79.73411140460321,
- "atrH1": 13.80561886069126,
- "bias": "NEYTRAL",
- "prob": 50,
- "score": -25,
+ "atrD1": 81.72696157201392,
+ "atrH1": 16.79236951599591,
+ "bias": "SHORT",
+ "prob": 55,
+ "score": -30,
  "factors": [
   {
    "key": "d1",
@@ -28,8 +28,8 @@
    "key": "h1",
    "label": "H1 konfluens",
    "weight": 15,
-   "value": -0.34,
-   "note": "H1 skor -34"
+   "value": -0.63,
+   "note": "H1 skor -63"
   },
   {
    "key": "ry",
@@ -42,15 +42,15 @@
    "key": "dxy",
    "label": "Dollar (5 kun)",
    "weight": 10,
-   "value": 0.5834637645141694,
-   "note": "DXY 5 kunda -0.58%"
+   "value": 0.5091830485769222,
+   "note": "DXY 5 kunda -0.51%"
   },
   {
    "key": "pd",
    "label": "Premium / Discount (D1)",
    "weight": 10,
    "value": 1,
-   "note": "narx kunlik diapazonning arzon qismida (-57%)"
+   "note": "narx kunlik diapazonning arzon qismida (-32%)"
   },
   {
    "key": "cot",
@@ -60,7 +60,9 @@
    "note": "fondlar long pozitsiyasi 3 yillik diapazonning 39% ida"
   }
  ],
- "notes": [],
+ "notes": [
+  "bugun yuqori ta'sirli yangilik bor, ehtimol 55% bilan cheklandi"
+ ],
  "events": [
   {
    "title": "JOLTS Job Openings",
@@ -79,66 +81,73 @@
  ],
  "zones": [
   {
-   "lo": 3925,
-   "hi": 3944.699951515625,
-   "score": 4.5,
+   "lo": 3975,
+   "hi": 4029.79980434375,
+   "score": 8,
    "tags": [
-    "3925 yumaloq",
-    "NY ochilishi",
+    "3975 yumaloq",
+    "PDH",
+    "D1 bearish FVG",
     "H1 bearish FVG",
-    "H4 bearish FVG"
+    "H1 bearish OB",
+    "4000 yumaloq",
+    "4025 yumaloq"
    ],
    "strength": "kuchli",
    "side": 1
   },
   {
-   "lo": 3974.600098,
-   "hi": 4003.00000034375,
-   "score": 8.5,
+   "lo": 4092.49999965625,
+   "hi": 4159.59960903125,
+   "score": 14.5,
    "tags": [
     "H1 BSL (stoplar)",
-    "PDH",
-    "H4 BSL (stoplar)",
-    "H1 bearish FVG",
-    "3975 yumaloq",
-    "H1 bearish OB",
-    "4000 yumaloq"
-   ],
-   "strength": "kuchli",
-   "side": 1
-  },
-  {
-   "lo": 4091.000244484375,
-   "hi": 4132.900146828125,
-   "score": 9.5,
-   "tags": [
     "H4 BSL (stoplar)",
     "D1 bearish FVG",
     "haftalik high",
     "4100 yumaloq",
+    "H1 bearish FVG",
     "H4 bearish FVG",
-    "4125 yumaloq"
+    "H4 bearish OB",
+    "4125 yumaloq",
+    "4150 yumaloq"
    ],
    "strength": "kuchli",
    "side": 1
   },
   {
-   "lo": 3888.300049171875,
-   "hi": 3919.600098,
-   "score": 9,
+   "lo": 4168.99999965625,
+   "hi": 4206.99999965625,
+   "score": 6.5,
+   "tags": [
+    "H4 bearish OB",
+    "H4 BSL (stoplar)",
+    "H4 bearish FVG",
+    "4175 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 3889.79980434375,
+   "hi": 3932.499755515625,
+   "score": 10.5,
    "tags": [
     "H1 bullish FVG",
     "PDL",
     "H1 bullish OB",
     "H4 OTE",
+    "H1 SSL (stoplar)",
     "3900 yumaloq",
-    "H4 bullish FVG"
+    "3925 yumaloq",
+    "Osiyo low",
+    "NY ochilishi"
    ],
    "strength": "kuchli",
    "side": -1
   },
   {
-   "lo": 3873.100098,
+   "lo": 3874.599853171875,
    "hi": 3875,
    "score": 5.5,
    "tags": [
@@ -151,13 +160,13 @@
    "side": -1
   },
   {
-   "lo": 3700,
-   "hi": 3743.50000034375,
+   "lo": 3702.599853171875,
+   "hi": 3750,
    "score": 3.5,
    "tags": [
-    "3700 yumaloq",
     "D1 bullish FVG",
-    "3725 yumaloq"
+    "3725 yumaloq",
+    "3750 yumaloq"
    ],
    "strength": "o'rta",
    "side": -1
@@ -169,60 +178,69 @@
    "main": true,
    "kind": "qaytish",
    "zone": {
-    "lo": 3925,
-    "hi": 3944.699951515625,
-    "score": 4.5,
+    "lo": 3975,
+    "hi": 4029.79980434375,
+    "score": 8,
     "tags": [
-     "3925 yumaloq",
-     "NY ochilishi",
+     "3975 yumaloq",
+     "PDH",
+     "D1 bearish FVG",
      "H1 bearish FVG",
-     "H4 bearish FVG"
+     "H1 bearish OB",
+     "4000 yumaloq",
+     "4025 yumaloq"
     ],
     "strength": "kuchli",
     "side": 1
    },
-   "entry": 3934.8499757578124,
-   "sl": 3948.151356230798,
-   "tp1": 3875,
-   "tp2": 3859.0383434324176,
-   "tp1Tag": "H1 SSL (stoplar)",
-   "tp2Tag": "5.7R",
-   "rr1": 4.5,
-   "rr2": 5.7
+   "entry": 4002.399902171875,
+   "sl": 4033.997896722749,
+   "tp1": 3949.399902,
+   "tp2": 3875,
+   "tp1Tag": "hozirgi narx",
+   "tp2Tag": "H1 SSL (stoplar)",
+   "rr1": 1.7,
+   "rr2": 4
   },
   {
    "dir": 1,
-   "main": true,
+   "main": false,
    "kind": "qaytish",
    "zone": {
-    "lo": 3888.300049171875,
-    "hi": 3919.600098,
-    "score": 9,
+    "lo": 3889.79980434375,
+    "hi": 3932.499755515625,
+    "score": 10.5,
     "tags": [
      "H1 bullish FVG",
      "PDL",
      "H1 bullish OB",
      "H4 OTE",
+     "H1 SSL (stoplar)",
      "3900 yumaloq",
-     "H4 bullish FVG"
+     "3925 yumaloq",
+     "Osiyo low",
+     "NY ochilishi"
     ],
     "strength": "kuchli",
     "side": -1
    },
-   "entry": 3903.9500735859374,
-   "sl": 3884.848644456702,
-   "tp1": 3974.600098,
-   "tp2": 3997.521812955082,
-   "tp1Tag": "H1 BSL (stoplar)",
-   "tp2Tag": "4.9R",
-   "rr1": 3.7,
-   "rr2": 4.9
+   "entry": 3911.1497799296876,
+   "sl": 3885.6017119647513,
+   "tp1": 3975,
+   "tp2": 4092.49999965625,
+   "tp1Tag": "3975 yumaloq",
+   "tp2Tag": "H1 BSL (stoplar)",
+   "rr1": 2.5,
+   "rr2": 7.1
   }
  ],
- "invalid": null,
- "nyOpen": 3926.50000034375,
- "pdh": 3974.600098,
- "pdl": 3893.800049171875,
+ "invalid": {
+  "price": 3976.099853171875,
+  "text": "H4 shami oxirgi H4 cho'qqisidan yuqorida yopilsa, short ssenariy bekor"
+ },
+ "nyOpen": 3927.999755515625,
+ "pdh": 3976.099853171875,
+ "pdl": 3895.29980434375,
  "macro": {
   "realYield": {
    "last": 2.6,
@@ -235,7 +253,7 @@
    "date": "2026-10-30"
   },
   "dxy": {
-   "last": 101.7229995727539,
+   "last": 101.79900360107422,
    "prev5": 102.31999969482422,
    "date": "2026-11-03"
   },
@@ -246,6 +264,5 @@
   "net": 105562,
   "netPrev": 104206,
   "index3y": 38.617712452597466
- },
- "narrative": "D1 va H4 vaqt oralig'ida trend pastga qarab ishlayotgani va H1 da pasayish kayfiyati ustunligi bosimni saqlab turibdi. Lekin real stavkalar pasaygani va dollar biroz zaiflashgani oltinni pastda ushlab turishga harakat qilyapti. Shu sababli bozorda aniq yo'nalish yo'q va bugun diapazon ichida harakatlanish ehtimoli yuqori. Kun davomida JOLTS va saylovlar bo'yicha yangiliklar chiqqanda ehtiyot bo'lish kerak."
+ }
 }
