@@ -22,5 +22,29 @@
     "r": 0
    }
   ]
+ },
+ {
+  "date": "2026-11-03",
+  "bias": "SHORT",
+  "prob": 55,
+  "biasOk": false,
+  "close": 3932.899902171875,
+  "ref": 3927.999755515625,
+  "plans": [
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 4002.399902171875,
+    "result": "ishga tushmadi",
+    "r": 0
+   },
+   {
+    "dir": 1,
+    "main": false,
+    "entry": 3911.1497799296876,
+    "result": "ochiq",
+    "r": 0
+   }
+  ]
  }
 ]
