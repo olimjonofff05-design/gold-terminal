@@ -1,5 +1,5 @@
 {
- "at": 1793738224,
+ "at": 1793753570,
  "events": [
   {
    "title": "Daylight Saving Time Shift",
@@ -117,7 +117,7 @@
    "title": "Crude Oil Inventories",
    "time": 1793806200,
    "impact": "Low",
-   "forecast": "-0.1M",
+   "forecast": "-1.7M",
    "previous": "-1.9M"
   },
   {
@@ -166,7 +166,7 @@
    "title": "Natural Gas Storage",
    "time": 1793892600,
    "impact": "Low",
-   "forecast": "",
+   "forecast": "81B",
    "previous": "80B"
   },
   {
