@@ -1,0 +1,272 @@
+{
+ "date": "2026-11-05",
+ "at": 1793867667,
+ "source": "Yahoo GC=F (spotga moslangan)",
+ "price": 4122.700195,
+ "changePct": 3.38,
+ "atrD1": 87.02104693917508,
+ "atrH1": 17.979174865863733,
+ "bias": "NEYTRAL",
+ "prob": 50,
+ "score": 23,
+ "factors": [
+  {
+   "key": "d1",
+   "label": "D1 struktura va EMA",
+   "weight": 25,
+   "value": 0,
+   "note": "kunlik trend aniq emas"
+  },
+  {
+   "key": "h4",
+   "label": "H4 struktura",
+   "weight": 20,
+   "value": 1,
+   "note": "H4 da yuqori cho'qqilar sindirilyapti"
+  },
+  {
+   "key": "h1",
+   "label": "H1 konfluens",
+   "weight": 15,
+   "value": 0.53,
+   "note": "H1 skor +53"
+  },
+  {
+   "key": "ry",
+   "label": "Real stavka (5 kun)",
+   "weight": 15,
+   "value": -0.09999999999999787,
+   "note": "real stavka 5 kunda +1 b.p. (2.65%)"
+  },
+  {
+   "key": "dxy",
+   "label": "Dollar (5 kun)",
+   "weight": 10,
+   "value": 0.6448423416738014,
+   "note": "DXY 5 kunda -0.64%"
+  },
+  {
+   "key": "pd",
+   "label": "Premium / Discount (D1)",
+   "weight": 10,
+   "value": -1,
+   "note": "narx kunlik diapazonning qimmat qismida (117%)"
+  },
+  {
+   "key": "cot",
+   "label": "COT (fondlar pozitsiyasi)",
+   "weight": 5,
+   "value": 0,
+   "note": "fondlar long pozitsiyasi 3 yillik diapazonning 39% ida"
+  }
+ ],
+ "notes": [],
+ "events": [
+  {
+   "title": "Unemployment Claims",
+   "time": 1793885400,
+   "impact": "Medium",
+   "forecast": "197K",
+   "previous": "194K"
+  }
+ ],
+ "zones": [
+  {
+   "lo": 4161.100585625,
+   "hi": 4200,
+   "score": 9.5,
+   "tags": [
+    "H4 bearish OB",
+    "H1 BSL (stoplar)",
+    "H4 BSL (stoplar)",
+    "H1 bearish FVG",
+    "H4 bearish FVG",
+    "4175 yumaloq",
+    "4200 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 4212.200195,
+   "hi": 4212.80029265625,
+   "score": 1,
+   "tags": [
+    "H1 bearish FVG"
+   ],
+   "strength": "kuchsiz",
+   "side": 1
+  },
+  {
+   "lo": 4246.4003903125,
+   "hi": 4339.00048796875,
+   "score": 9,
+   "tags": [
+    "H4 bearish FVG",
+    "D1 bearish FVG",
+    "4250 yumaloq",
+    "4275 yumaloq",
+    "H4 bearish OB",
+    "4300 yumaloq",
+    "4325 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 4068.7004391406253,
+   "hi": 4153.4003903125,
+   "score": 20,
+   "tags": [
+    "PDH",
+    "H1 bullish FVG",
+    "H4 bullish FVG",
+    "4075 yumaloq",
+    "Osiyo low",
+    "haftalik high",
+    "4100 yumaloq",
+    "H1 SSL (stoplar)",
+    "H4 bearish OB",
+    "4125 yumaloq",
+    "H1 bearish OB",
+    "NY ochilishi",
+    "H1 BSL (stoplar)",
+    "Osiyo high",
+    "4150 yumaloq",
+    "H4 BSL (stoplar)"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  },
+  {
+   "lo": 4025,
+   "hi": 4061.7004391406253,
+   "score": 6.5,
+   "tags": [
+    "4025 yumaloq",
+    "H1 SSL (stoplar)",
+    "H1 bullish OB",
+    "H1 bullish FVG",
+    "H4 bullish FVG",
+    "4050 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  },
+  {
+   "lo": 3891.5004879687503,
+   "hi": 3936.6003414843753,
+   "score": 11.5,
+   "tags": [
+    "H4 SSL (stoplar)",
+    "H4 bullish OB",
+    "3900 yumaloq",
+    "H4 bullish FVG",
+    "H1 SSL (stoplar)",
+    "PDL",
+    "H1 bullish OB",
+    "3925 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  }
+ ],
+ "plans": [
+  {
+   "dir": -1,
+   "main": true,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 4161.100585625,
+    "hi": 4200,
+    "score": 9.5,
+    "tags": [
+     "H4 bearish OB",
+     "H1 BSL (stoplar)",
+     "H4 BSL (stoplar)",
+     "H1 bearish FVG",
+     "H4 bearish FVG",
+     "4175 yumaloq",
+     "4200 yumaloq"
+    ],
+    "strength": "kuchli",
+    "side": 1
+   },
+   "entry": 4180.550292812501,
+   "sl": 4204.494793716466,
+   "tp1": 4122.700195,
+   "tp2": 4061.7004391406253,
+   "tp1Tag": "hozirgi narx",
+   "tp2Tag": "4025 yumaloq",
+   "rr1": 2.4,
+   "rr2": 5
+  },
+  {
+   "dir": 1,
+   "main": true,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 4068.7004391406253,
+    "hi": 4153.4003903125,
+    "score": 20,
+    "tags": [
+     "PDH",
+     "H1 bullish FVG",
+     "H4 bullish FVG",
+     "4075 yumaloq",
+     "Osiyo low",
+     "haftalik high",
+     "4100 yumaloq",
+     "H1 SSL (stoplar)",
+     "H4 bearish OB",
+     "4125 yumaloq",
+     "H1 bearish OB",
+     "NY ochilishi",
+     "H1 BSL (stoplar)",
+     "Osiyo high",
+     "4150 yumaloq",
+     "H4 BSL (stoplar)"
+    ],
+    "strength": "kuchli",
+    "side": -1
+   },
+   "entry": 4111.050414726563,
+   "sl": 4064.2056454241592,
+   "tp1": 4212.200195,
+   "tp2": 4268.413918162884,
+   "tp1Tag": "H1 bearish FVG",
+   "tp2Tag": "3.4R",
+   "rr1": 2.2,
+   "rr2": 3.4
+  }
+ ],
+ "invalid": null,
+ "nyOpen": 4136.80029265625,
+ "pdh": 4068.7004391406253,
+ "pdl": 3915.6003414843753,
+ "macro": {
+  "realYield": {
+   "last": 2.65,
+   "prev5": 2.64,
+   "date": "2026-11-03"
+  },
+  "nominal": {
+   "last": 4.95,
+   "prev5": 4.99,
+   "date": "2026-11-03"
+  },
+  "dxy": {
+   "last": 101.38200378417969,
+   "prev5": 102.04000091552734,
+   "date": "2026-11-05"
+  },
+  "dxySource": "DXY"
+ },
+ "cot": {
+  "date": "2026-10-27",
+  "net": 105562,
+  "netPrev": 104206,
+  "index3y": 38.617712452597466
+ },
+ "narrative": "H4 vaqt oralig'ida yangi cho'qqilar yangilanayotgani va dollar besh kunda zaiflashgani xaridorlarga kuch bermoqda. Lekin narx kunlik diapazonning yuqori (qimmat) qismida turgani va real stavkalar ozgina ko'tarilgani o'sishni cheklayapti. Bugun Unemployment Claims chiqishi kutilayotgani sababli yo'nalish aniq emas, shuning uchun diapazon ichidagi chekka zonalardan qaytishni kutish ma'qul."
+}
