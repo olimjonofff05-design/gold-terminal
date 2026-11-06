@@ -1,5 +1,5 @@
 {
- "at": 1793958970,
+ "at": 1793985823,
  "events": [
   {
    "title": "Daylight Saving Time Shift",
@@ -221,6 +221,13 @@
   {
    "title": "FOMC Member Bowman Speaks",
    "time": 1793985300,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "FOMC Member Daly Speaks",
+   "time": 1793988000,
    "impact": "Low",
    "forecast": "",
    "previous": ""
