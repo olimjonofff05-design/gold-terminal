@@ -1,0 +1,299 @@
+{
+ "date": "2026-11-06",
+ "at": 1793958971,
+ "source": "Yahoo GC=F (spotga moslangan)",
+ "price": 4085.60009765625,
+ "changePct": 0.99,
+ "atrD1": 85.92670039515149,
+ "atrH1": 19.24082167661046,
+ "bias": "NEYTRAL",
+ "prob": 50,
+ "score": 15,
+ "factors": [
+  {
+   "key": "d1",
+   "label": "D1 struktura va EMA",
+   "weight": 25,
+   "value": 0,
+   "note": "kunlik trend aniq emas"
+  },
+  {
+   "key": "h4",
+   "label": "H4 struktura",
+   "weight": 20,
+   "value": 1,
+   "note": "H4 da yuqori cho'qqilar sindirilyapti"
+  },
+  {
+   "key": "h1",
+   "label": "H1 konfluens",
+   "weight": 15,
+   "value": 0.06,
+   "note": "H1 skor +6"
+  },
+  {
+   "key": "ry",
+   "label": "Real stavka (5 kun)",
+   "weight": 15,
+   "value": 0.29999999999999805,
+   "note": "real stavka 5 kunda -3 b.p. (2.64%)"
+  },
+  {
+   "key": "dxy",
+   "label": "Dollar (5 kun)",
+   "weight": 10,
+   "value": -0.1079707629731752,
+   "note": "DXY 5 kunda +0.11%"
+  },
+  {
+   "key": "pd",
+   "label": "Premium / Discount (D1)",
+   "weight": 10,
+   "value": -0.981870526005609,
+   "note": "narx kunlik diapazonning qimmat qismida (95%)"
+  },
+  {
+   "key": "cot",
+   "label": "COT (fondlar pozitsiyasi)",
+   "weight": 5,
+   "value": 0,
+   "note": "fondlar long pozitsiyasi 3 yillik diapazonning 39% ida"
+  }
+ ],
+ "notes": [],
+ "events": [
+  {
+   "title": "Average Hourly Earnings m/m",
+   "time": 1793971800,
+   "impact": "High",
+   "forecast": "0.3%",
+   "previous": "0.1%"
+  },
+  {
+   "title": "Non-Farm Employment Change",
+   "time": 1793971800,
+   "impact": "High",
+   "forecast": "65K",
+   "previous": "29K"
+  },
+  {
+   "title": "Unemployment Rate",
+   "time": 1793971800,
+   "impact": "High",
+   "forecast": "4.2%",
+   "previous": "4.2%"
+  },
+  {
+   "title": "Prelim UoM Consumer Sentiment",
+   "time": 1793977200,
+   "impact": "Medium",
+   "forecast": "48.1",
+   "previous": "46.3"
+  },
+  {
+   "title": "Prelim UoM Inflation Expectations",
+   "time": 1793977200,
+   "impact": "Medium",
+   "forecast": "",
+   "previous": "4.7%"
+  }
+ ],
+ "zones": [
+  {
+   "lo": 4090.699951171875,
+   "hi": 4200.70019565625,
+   "score": 18,
+   "tags": [
+    "H1 bearish FVG",
+    "H1 bearish OB",
+    "haftalik high",
+    "4100 yumaloq",
+    "Osiyo high",
+    "H4 bearish OB",
+    "4125 yumaloq",
+    "H4 BSL (stoplar)",
+    "H1 BSL (stoplar)",
+    "4150 yumaloq",
+    "PDH",
+    "H4 bearish FVG",
+    "4175 yumaloq",
+    "4200 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 4224.7998046875,
+   "hi": 4225.39990234375,
+   "score": 1.5,
+   "tags": [
+    "H1 bearish FVG",
+    "4225 yumaloq"
+   ],
+   "strength": "kuchsiz",
+   "side": 1
+  },
+  {
+   "lo": 4248.00000034375,
+   "hi": 4340.600098,
+   "score": 9,
+   "tags": [
+    "H4 bearish FVG",
+    "4250 yumaloq",
+    "D1 bearish FVG",
+    "4275 yumaloq",
+    "H4 bearish OB",
+    "4300 yumaloq",
+    "4325 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 4038,
+   "hi": 4080.800048828125,
+   "score": 8.5,
+   "tags": [
+    "H1 SSL (stoplar)",
+    "H1 bullish OB",
+    "Osiyo low",
+    "4050 yumaloq",
+    "NY ochilishi",
+    "H1 bullish FVG",
+    "PDL",
+    "4075 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  },
+  {
+   "lo": 3925,
+   "hi": 4006.89990234375,
+   "score": 10,
+   "tags": [
+    "3925 yumaloq",
+    "H1 SSL (stoplar)",
+    "H1 bullish OB",
+    "H4 OTE",
+    "3950 yumaloq",
+    "H1 bullish FVG",
+    "3975 yumaloq",
+    "H4 teng tubliklar",
+    "4000 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  },
+  {
+   "lo": 3893.100098,
+   "hi": 3916.199951515625,
+   "score": 8,
+   "tags": [
+    "H4 SSL (stoplar)",
+    "H4 bullish OB",
+    "3900 yumaloq",
+    "H1 bullish OB",
+    "H4 bullish FVG"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  }
+ ],
+ "plans": [
+  {
+   "dir": -1,
+   "main": true,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 4090.699951171875,
+    "hi": 4200.70019565625,
+    "score": 18,
+    "tags": [
+     "H1 bearish FVG",
+     "H1 bearish OB",
+     "haftalik high",
+     "4100 yumaloq",
+     "Osiyo high",
+     "H4 bearish OB",
+     "4125 yumaloq",
+     "H4 BSL (stoplar)",
+     "H1 BSL (stoplar)",
+     "4150 yumaloq",
+     "PDH",
+     "H4 bearish FVG",
+     "4175 yumaloq",
+     "4200 yumaloq"
+    ],
+    "strength": "kuchli",
+    "side": 1
+   },
+   "entry": 4145.700073414062,
+   "sl": 4205.510401075402,
+   "tp1": 4006.89990234375,
+   "tp2": 3916.199951515625,
+   "tp1Tag": "3925 yumaloq",
+   "tp2Tag": "H4 SSL (stoplar)",
+   "rr1": 2.3,
+   "rr2": 3.8
+  },
+  {
+   "dir": 1,
+   "main": true,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 4038,
+    "hi": 4080.800048828125,
+    "score": 8.5,
+    "tags": [
+     "H1 SSL (stoplar)",
+     "H1 bullish OB",
+     "Osiyo low",
+     "4050 yumaloq",
+     "NY ochilishi",
+     "H1 bullish FVG",
+     "PDL",
+     "4075 yumaloq"
+    ],
+    "strength": "kuchli",
+    "side": -1
+   },
+   "entry": 4059.4000244140625,
+   "sl": 4033.1897945808473,
+   "tp1": 4111.820484080493,
+   "tp2": 4224.7998046875,
+   "tp1Tag": "2R",
+   "tp2Tag": "H1 bearish FVG",
+   "rr1": 2,
+   "rr2": 6.3
+  }
+ ],
+ "invalid": null,
+ "nyOpen": 4053.60009765625,
+ "pdh": 4155.7998046875,
+ "pdl": 4071.10009765625,
+ "macro": {
+  "realYield": {
+   "last": 2.64,
+   "prev5": 2.67,
+   "date": "2026-11-04"
+  },
+  "nominal": {
+   "last": 4.9,
+   "prev5": 5.05,
+   "date": "2026-11-04"
+  },
+  "dxy": {
+   "last": 101.98999786376953,
+   "prev5": 101.87999725341797,
+   "date": "2026-11-06"
+  },
+  "dxySource": "DXY"
+ },
+ "cot": {
+  "date": "2026-10-27",
+  "net": 105562,
+  "netPrev": 104206,
+  "index3y": 38.617712452597466
+ },
+ "narrative": "H4 vaqt oralig'ida yuqori cho'qqilar yangilanayotgan bo'lsa ham, narx kunlik diapazonning eng yuqori qismida, ya'ni qimmat hududda turibdi. Dollar ozgina mustahkamlanyapti va real stavkalar sezilarli o'zgarishsiz qolmoqda. Bugun muhim bandlik yangiliklari chiqishi kutilayotgani bois, bozorda aniq yo'nalish yo'q va diapazon ichidagi tebranishlar ustunlik qilishi mumkin."
+}

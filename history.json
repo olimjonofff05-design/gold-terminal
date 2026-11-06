@@ -70,5 +70,29 @@
     "r": 0
    }
   ]
+ },
+ {
+  "date": "2026-11-05",
+  "bias": "NEYTRAL",
+  "prob": 50,
+  "biasOk": false,
+  "close": 4086.8999026875,
+  "ref": 4136.80029265625,
+  "plans": [
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 4180.550292812501,
+    "result": "ishga tushmadi",
+    "r": 0
+   },
+   {
+    "dir": 1,
+    "main": true,
+    "entry": 4111.050414726563,
+    "result": "ochiq",
+    "r": 0
+   }
+  ]
  }
 ]
