@@ -1,16 +1,16 @@
 {
- "updatedAt": 1793958972,
+ "updatedAt": 1794213759,
  "brief": {
-  "date": "2026-11-06",
-  "at": 1793958971,
+  "date": "2026-11-09",
+  "at": 1794213758,
   "source": "Yahoo GC=F (spotga moslangan)",
-  "price": 4085.60009765625,
-  "changePct": 0.99,
-  "atrD1": 85.92670039515149,
-  "atrH1": 19.24082167661046,
+  "price": 4099,
+  "changePct": -0.94,
+  "atrD1": 86.1839564693914,
+  "atrH1": 17.13079662234949,
   "bias": "NEYTRAL",
   "prob": 50,
-  "score": 15,
+  "score": 20,
   "factors": [
    {
     "key": "d1",
@@ -30,93 +30,70 @@
     "key": "h1",
     "label": "H1 konfluens",
     "weight": 15,
-    "value": 0.06,
-    "note": "H1 skor +6"
+    "value": 0.43,
+    "note": "H1 skor +43"
    },
    {
     "key": "ry",
     "label": "Real stavka (5 kun)",
     "weight": 15,
     "value": 0.29999999999999805,
-    "note": "real stavka 5 kunda -3 b.p. (2.64%)"
+    "note": "real stavka 5 kunda -3 b.p. (2.60%)"
    },
    {
     "key": "dxy",
     "label": "Dollar (5 kun)",
     "weight": 10,
-    "value": -0.1079707629731752,
-    "note": "DXY 5 kunda +0.11%"
+    "value": -0.12579690619241024,
+    "note": "DXY 5 kunda +0.13%"
    },
    {
     "key": "pd",
     "label": "Premium / Discount (D1)",
     "weight": 10,
-    "value": -0.981870526005609,
-    "note": "narx kunlik diapazonning qimmat qismida (95%)"
+    "value": -1,
+    "note": "narx kunlik diapazonning qimmat qismida (103%)"
    },
    {
     "key": "cot",
     "label": "COT (fondlar pozitsiyasi)",
     "weight": 5,
     "value": 0,
-    "note": "fondlar long pozitsiyasi 3 yillik diapazonning 39% ida"
+    "note": "fondlar long pozitsiyasi 3 yillik diapazonning 38% ida"
    }
   ],
   "notes": [],
-  "events": [
-   {
-    "title": "Average Hourly Earnings m/m",
-    "time": 1793971800,
-    "impact": "High",
-    "forecast": "0.3%",
-    "previous": "0.1%"
-   },
-   {
-    "title": "Non-Farm Employment Change",
-    "time": 1793971800,
-    "impact": "High",
-    "forecast": "65K",
-    "previous": "29K"
-   },
-   {
-    "title": "Unemployment Rate",
-    "time": 1793971800,
-    "impact": "High",
-    "forecast": "4.2%",
-    "previous": "4.2%"
-   },
-   {
-    "title": "Prelim UoM Consumer Sentiment",
-    "time": 1793977200,
-    "impact": "Medium",
-    "forecast": "48.1",
-    "previous": "46.3"
-   },
-   {
-    "title": "Prelim UoM Inflation Expectations",
-    "time": 1793977200,
-    "impact": "Medium",
-    "forecast": "",
-    "previous": "4.7%"
-   }
-  ],
+  "events": [],
   "zones": [
    {
-    "lo": 4090.699951171875,
-    "hi": 4200.70019565625,
-    "score": 18,
+    "lo": 4100,
+    "hi": 4160.39990234375,
+    "score": 15.5,
     "tags": [
-     "H1 bearish FVG",
-     "H1 bearish OB",
-     "haftalik high",
      "4100 yumaloq",
-     "Osiyo high",
+     "H1 bearish FVG",
+     "H4 OTE",
      "H4 bearish OB",
      "4125 yumaloq",
-     "H4 BSL (stoplar)",
+     "NY ochilishi",
+     "H1 bearish OB",
      "H1 BSL (stoplar)",
+     "Osiyo high",
      "4150 yumaloq",
-     "PDH",
+     "H4 BSL (stoplar)",
+     "haftalik high"
+    ],
+    "strength": "kuchli",
+    "side": 1
+   },
+   {
+    "lo": 4169.80029296875,
+    "hi": 4207.80029296875,
+    "score": 8.5,
+    "tags": [
+     "H4 bearish OB",
+     "H4 BSL (stoplar)",
+     "H1 bearish FVG",
      "H4 bearish FVG",
      "4175 yumaloq",
      "4200 yumaloq"
@@ -125,59 +102,43 @@
     "side": 1
    },
    {
-    "lo": 4224.7998046875,
-    "hi": 4225.39990234375,
-    "score": 1.5,
+    "lo": 4250,
+    "hi": 4350,
+    "score": 10,
     "tags": [
-     "H1 bearish FVG",
-     "4225 yumaloq"
-    ],
-    "strength": "kuchsiz",
-    "side": 1
-   },
-   {
-    "lo": 4248.00000034375,
-    "hi": 4340.600098,
-    "score": 9,
-    "tags": [
-     "H4 bearish FVG",
      "4250 yumaloq",
+     "H4 bearish FVG",
      "D1 bearish FVG",
      "4275 yumaloq",
-     "H4 bearish OB",
      "4300 yumaloq",
-     "4325 yumaloq"
+     "H4 bearish OB",
+     "4325 yumaloq",
+     "4350 yumaloq"
     ],
     "strength": "kuchli",
     "side": 1
    },
    {
-    "lo": 4038,
-    "hi": 4080.800048828125,
-    "score": 8.5,
+    "lo": 4038.5,
+    "hi": 4088.400146484375,
+    "score": 9.5,
     "tags": [
-     "H1 SSL (stoplar)",
      "H1 bullish OB",
-     "Osiyo low",
      "4050 yumaloq",
-     "NY ochilishi",
      "H1 bullish FVG",
      "PDL",
-     "4075 yumaloq"
+     "4075 yumaloq",
+     "PDH",
+     "H4 bullish FVG"
     ],
     "strength": "kuchli",
     "side": -1
    },
    {
-    "lo": 3925,
-    "hi": 4006.89990234375,
-    "score": 10,
+    "lo": 3964.60009765625,
+    "hi": 4003,
+    "score": 4.5,
     "tags": [
-     "3925 yumaloq",
-     "H1 SSL (stoplar)",
-     "H1 bullish OB",
-     "H4 OTE",
-     "3950 yumaloq",
      "H1 bullish FVG",
      "3975 yumaloq",
      "H4 teng tubliklar",
@@ -187,15 +148,18 @@
     "side": -1
    },
    {
-    "lo": 3893.100098,
-    "hi": 3916.199951515625,
-    "score": 8,
+    "lo": 3900,
+    "hi": 3950,
+    "score": 10.5,
     "tags": [
+     "3900 yumaloq",
      "H4 SSL (stoplar)",
      "H4 bullish OB",
-     "3900 yumaloq",
+     "H4 bullish FVG",
+     "H1 SSL (stoplar)",
      "H1 bullish OB",
-     "H4 bullish FVG"
+     "3925 yumaloq",
+     "3950 yumaloq"
     ],
     "strength": "kuchli",
     "side": -1
@@ -207,151 +171,155 @@
     "main": true,
     "kind": "qaytish",
     "zone": {
-     "lo": 4090.699951171875,
-     "hi": 4200.70019565625,
-     "score": 18,
+     "lo": 4100,
+     "hi": 4160.39990234375,
+     "score": 15.5,
      "tags": [
-      "H1 bearish FVG",
-      "H1 bearish OB",
-      "haftalik high",
       "4100 yumaloq",
-      "Osiyo high",
+      "H1 bearish FVG",
+      "H4 OTE",
       "H4 bearish OB",
       "4125 yumaloq",
-      "H4 BSL (stoplar)",
+      "NY ochilishi",
+      "H1 bearish OB",
       "H1 BSL (stoplar)",
+      "Osiyo high",
       "4150 yumaloq",
-      "PDH",
-      "H4 bearish FVG",
-      "4175 yumaloq",
-      "4200 yumaloq"
+      "H4 BSL (stoplar)",
+      "haftalik high"
      ],
      "strength": "kuchli",
      "side": 1
     },
-    "entry": 4145.700073414062,
-    "sl": 4205.510401075402,
-    "tp1": 4006.89990234375,
-    "tp2": 3916.199951515625,
-    "tp1Tag": "3925 yumaloq",
-    "tp2Tag": "H4 SSL (stoplar)",
-    "rr1": 2.3,
-    "rr2": 3.8
+    "entry": 4130.199951171875,
+    "sl": 4164.682601499338,
+    "tp1": 4003,
+    "tp2": 3950,
+    "tp1Tag": "H1 bullish FVG",
+    "tp2Tag": "3900 yumaloq",
+    "rr1": 3.7,
+    "rr2": 5.2
    },
    {
     "dir": 1,
     "main": true,
     "kind": "qaytish",
     "zone": {
-     "lo": 4038,
-     "hi": 4080.800048828125,
-     "score": 8.5,
+     "lo": 4038.5,
+     "hi": 4088.400146484375,
+     "score": 9.5,
      "tags": [
-      "H1 SSL (stoplar)",
       "H1 bullish OB",
-      "Osiyo low",
       "4050 yumaloq",
-      "NY ochilishi",
       "H1 bullish FVG",
       "PDL",
-      "4075 yumaloq"
+      "4075 yumaloq",
+      "PDH",
+      "H4 bullish FVG"
      ],
      "strength": "kuchli",
      "side": -1
     },
-    "entry": 4059.4000244140625,
-    "sl": 4033.1897945808473,
-    "tp1": 4111.820484080493,
-    "tp2": 4224.7998046875,
-    "tp1Tag": "2R",
-    "tp2Tag": "H1 bearish FVG",
-    "rr1": 2,
-    "rr2": 6.3
+    "entry": 4063.4500732421875,
+    "sl": 4034.2173008444124,
+    "tp1": 4169.80029296875,
+    "tp2": 4250,
+    "tp1Tag": "H4 bearish OB",
+    "tp2Tag": "4250 yumaloq",
+    "rr1": 3.6,
+    "rr2": 6.4
    }
   ],
   "invalid": null,
-  "nyOpen": 4053.60009765625,
-  "pdh": 4155.7998046875,
-  "pdl": 4071.10009765625,
+  "nyOpen": 4128.7001953125,
+  "pdh": 4078.300048828125,
+  "pdl": 4058.60009765625,
   "macro": {
    "realYield": {
-    "last": 2.64,
-    "prev5": 2.67,
-    "date": "2026-11-04"
+    "last": 2.6,
+    "prev5": 2.63,
+    "date": "2026-11-05"
    },
    "nominal": {
-    "last": 4.9,
-    "prev5": 5.05,
-    "date": "2026-11-04"
+    "last": 4.84,
+    "prev5": 4.98,
+    "date": "2026-11-05"
    },
    "dxy": {
-    "last": 101.98999786376953,
-    "prev5": 101.87999725341797,
-    "date": "2026-11-06"
+    "last": 101.87799835205078,
+    "prev5": 101.75,
+    "date": "2026-11-09"
    },
    "dxySource": "DXY"
   },
   "cot": {
-   "date": "2026-10-27",
-   "net": 105562,
-   "netPrev": 104206,
-   "index3y": 38.617712452597466
+   "date": "2026-11-03",
+   "net": 103614,
+   "netPrev": 105562,
+   "index3y": 37.56390212763655
   },
-  "narrative": "H4 vaqt oralig'ida yuqori cho'qqilar yangilanayotgan bo'lsa ham, narx kunlik diapazonning eng yuqori qismida, ya'ni qimmat hududda turibdi. Dollar ozgina mustahkamlanyapti va real stavkalar sezilarli o'zgarishsiz qolmoqda. Bugun muhim bandlik yangiliklari chiqishi kutilayotgani bois, bozorda aniq yo'nalish yo'q va diapazon ichidagi tebranishlar ustunlik qilishi mumkin."
+  "narrative": "H4 vaqt oralig'ida yangi cho'qqilar buzilayotgan bo'lsa ham, narx kunlik diapazonning yuqori, ya'ni qimmat qismida turibdi. D1 trendi hozircha aniq emas va dollar biroz kuchaymoqda. Shu sababli bozorda bir yoqlama ustunlik yo'q, bugun diapazon ichida harakat kutamiz."
  },
  "prevEval": {
-  "date": "2026-11-05",
+  "date": "2026-11-06",
   "bias": "NEYTRAL",
   "prob": 50,
   "biasOk": false,
-  "close": 4086.8999026875,
-  "ref": 4136.80029265625,
+  "close": 4071,
+  "ref": 4053.60009765625,
   "plans": [
    {
     "dir": -1,
     "main": true,
-    "entry": 4180.550292812501,
+    "entry": 4145.700073414062,
     "result": "ishga tushmadi",
     "r": 0
    },
    {
     "dir": 1,
     "main": true,
-    "entry": 4111.050414726563,
-    "result": "ochiq",
-    "r": 0
+    "entry": 4059.4000244140625,
+    "result": "SL",
+    "r": -1
    }
   ]
  },
  "stats": {
-  "days": 4,
+  "days": 5,
   "biasOk": 0,
   "biasAcc": 0,
-  "trades": 1,
+  "trades": 2,
   "wins": 0,
-  "totalR": -1
+  "totalR": -2
  },
  "upcoming": [
   {
-   "title": "Average Hourly Earnings m/m",
-   "time": 1793971800,
+   "title": "Core CPI m/m",
+   "time": 1794317400,
+   "impact": "High",
+   "forecast": "0.2%",
+   "previous": "0.3%"
+  },
+  {
+   "title": "CPI m/m",
+   "time": 1794317400,
    "impact": "High",
    "forecast": "0.3%",
-   "previous": "0.1%"
+   "previous": "0.6%"
   },
   {
-   "title": "Non-Farm Employment Change",
-   "time": 1793971800,
+   "title": "Core PPI m/m",
+   "time": 1794576600,
    "impact": "High",
-   "forecast": "65K",
-   "previous": "29K"
+   "forecast": "0.3%",
+   "previous": "0.7%"
   },
   {
-   "title": "Unemployment Rate",
-   "time": 1793971800,
+   "title": "PPI m/m",
+   "time": 1794576600,
    "impact": "High",
-   "forecast": "4.2%",
-   "previous": "4.2%"
+   "forecast": "0.4%",
+   "previous": "1.3%"
   }
  ]
 }
