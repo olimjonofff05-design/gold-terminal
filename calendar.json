@@ -1,5 +1,5 @@
 {
- "at": 1794304755,
+ "at": 1794332409,
  "events": [
   {
    "title": "FOMC Member Bowman Speaks",
@@ -45,17 +45,17 @@
   },
   {
    "title": "ADP Weekly Employment Change",
-   "time": 1794316500,
-   "impact": "Low",
-   "forecast": "",
-   "previous": ""
-  },
-  {
-   "title": "ADP Weekly Employment Change",
-   "time": 1794316560,
+   "time": 1794316440,
    "impact": "Low",
    "forecast": "",
    "previous": "16.8K"
+  },
+  {
+   "title": "ADP Weekly Employment Change",
+   "time": 1794316500,
+   "impact": "Low",
+   "forecast": "",
+   "previous": "19.5K"
   },
   {
    "title": "Core CPI m/m",
