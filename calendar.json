@@ -1,5 +1,5 @@
 {
- "at": 1794363149,
+ "at": 1794389622,
  "events": [
   {
    "title": "FOMC Member Bowman Speaks",
@@ -173,7 +173,7 @@
    "title": "Crude Oil Inventories",
    "time": 1794502800,
    "impact": "Low",
-   "forecast": "",
+   "forecast": "-0.6M",
    "previous": "-0.9M"
   },
   {
@@ -201,7 +201,7 @@
    "title": "Federal Budget Balance",
    "time": 1794510000,
    "impact": "Low",
-   "forecast": "-286.3B",
+   "forecast": "-298.6B",
    "previous": "-26.9B"
   },
   {
@@ -233,10 +233,17 @@
    "previous": ""
   },
   {
+   "title": "FOMC Member Logan Speaks",
+   "time": 1794580800,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
    "title": "Natural Gas Storage",
    "time": 1794583800,
    "impact": "Low",
-   "forecast": "",
+   "forecast": "65B",
    "previous": "77B"
   },
   {
