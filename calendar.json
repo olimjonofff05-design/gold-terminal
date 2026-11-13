@@ -1,5 +1,5 @@
 {
- "at": 1794559721,
+ "at": 1794588457,
  "events": [
   {
    "title": "FOMC Member Bowman Speaks",
@@ -231,13 +231,6 @@
    "impact": "Low",
    "forecast": "",
    "previous": ""
-  },
-  {
-   "title": "Mortgage Delinquencies",
-   "time": 1794582900,
-   "impact": "Low",
-   "forecast": "",
-   "previous": "4.37%"
   },
   {
    "title": "Natural Gas Storage",
