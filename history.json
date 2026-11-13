@@ -190,5 +190,36 @@
     "r": -1
    }
   ]
+ },
+ {
+  "date": "2026-11-12",
+  "bias": "SHORT",
+  "prob": 56,
+  "biasOk": true,
+  "close": 3881.550049171875,
+  "ref": 3979.100097828125,
+  "plans": [
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 3994.40014665625,
+    "result": "ishga tushmadi",
+    "r": 0
+   },
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 4059.4000244999997,
+    "result": "ishga tushmadi",
+    "r": 0
+   },
+   {
+    "dir": 1,
+    "main": false,
+    "entry": 3925.65014665625,
+    "result": "SL",
+    "r": -1
+   }
+  ]
  }
 ]
