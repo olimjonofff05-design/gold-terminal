@@ -1,5 +1,5 @@
 {
- "at": 1794826670,
+ "at": 1794862589,
  "events": [
   {
    "title": "FOMC Member Barr Speaks",
@@ -24,7 +24,7 @@
   },
   {
    "title": "Cleveland Fed Inflation Expectations",
-   "time": 1794840480,
+   "time": 1794840300,
    "impact": "Low",
    "forecast": "",
    "previous": "3.3%"
@@ -39,6 +39,20 @@
   {
    "title": "FOMC Member Hammack Speaks",
    "time": 1794856500,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "FOMC Member Barkin Speaks",
+   "time": 1794870600,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "FOMC Member Goolsbee Speaks",
+   "time": 1794871800,
    "impact": "Low",
    "forecast": "",
    "previous": ""
@@ -219,6 +233,13 @@
    "previous": ""
   },
   {
+   "title": "FOMC Member Jefferson Speaks",
+   "time": 1795098300,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
    "title": "CB Leading Index m/m",
    "time": 1795100400,
    "impact": "Low",
@@ -237,7 +258,7 @@
    "time": 1795102200,
    "impact": "Low",
    "forecast": "",
-   "previous": ""
+   "previous": "61B"
   },
   {
    "title": "FOMC Member Goolsbee Speaks",
