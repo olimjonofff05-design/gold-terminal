@@ -1,5 +1,5 @@
 {
- "at": 1794862589,
+ "at": 1794886886,
  "events": [
   {
    "title": "FOMC Member Barr Speaks",
@@ -82,7 +82,7 @@
    "title": "Retail Sales m/m",
    "time": 1794922200,
    "impact": "High",
-   "forecast": "0.2%",
+   "forecast": "0.1%",
    "previous": "0.8%"
   },
   {
@@ -110,7 +110,7 @@
    "title": "Industrial Production m/m",
    "time": 1794924900,
    "impact": "Low",
-   "forecast": "0.1%",
+   "forecast": "0.0%",
    "previous": "0.7%"
   },
   {
@@ -166,7 +166,7 @@
    "title": "Pending Home Sales m/m",
    "time": 1795014000,
    "impact": "Low",
-   "forecast": "-2.3%",
+   "forecast": "-2.1%",
    "previous": "-7.3%"
   },
   {
@@ -175,6 +175,13 @@
    "impact": "Low",
    "forecast": "",
    "previous": "4.7M"
+  },
+  {
+   "title": "FOMC Member Daly Speaks",
+   "time": 1795022100,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
   },
   {
    "title": "FOMC Member Barr Speaks",
