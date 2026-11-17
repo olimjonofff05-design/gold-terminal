@@ -252,5 +252,36 @@
     "r": 0
    }
   ]
+ },
+ {
+  "date": "2026-11-16",
+  "bias": "SHORT",
+  "prob": 55,
+  "biasOk": true,
+  "close": 3852.699951,
+  "ref": 3872.21997034375,
+  "plans": [
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 3894.6199947578125,
+    "result": "ochiq",
+    "r": 0
+   },
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 3929.7698971015625,
+    "result": "ishga tushmadi",
+    "r": 0
+   },
+   {
+    "dir": 1,
+    "main": false,
+    "entry": 3872.9599607578125,
+    "result": "SL",
+    "r": -1
+   }
+  ]
  }
 ]
