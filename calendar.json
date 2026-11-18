@@ -1,5 +1,5 @@
 {
- "at": 1794950224,
+ "at": 1794970624,
  "events": [
   {
    "title": "FOMC Member Barr Speaks",
@@ -166,14 +166,14 @@
    "title": "Pending Home Sales m/m",
    "time": 1795014000,
    "impact": "Low",
-   "forecast": "-1.8%",
+   "forecast": "-2.0%",
    "previous": "-7.3%"
   },
   {
    "title": "Crude Oil Inventories",
    "time": 1795015800,
    "impact": "Low",
-   "forecast": "-0.3M",
+   "forecast": "0.4M",
    "previous": "4.7M"
   },
   {
@@ -222,14 +222,14 @@
    "title": "Philly Fed Manufacturing Index",
    "time": 1795095000,
    "impact": "Medium",
-   "forecast": "19.2",
+   "forecast": "20.6",
    "previous": "20.9"
   },
   {
    "title": "Unemployment Claims",
    "time": 1795095000,
    "impact": "Medium",
-   "forecast": "199K",
+   "forecast": "198K",
    "previous": "200K"
   },
   {
@@ -264,7 +264,7 @@
    "title": "Natural Gas Storage",
    "time": 1795102200,
    "impact": "Low",
-   "forecast": "",
+   "forecast": "25B",
    "previous": "61B"
   },
   {
@@ -306,7 +306,7 @@
    "title": "Revised UoM Consumer Sentiment",
    "time": 1795186800,
    "impact": "Medium",
-   "forecast": "52.1",
+   "forecast": "51.7",
    "previous": "51.0"
   },
   {
