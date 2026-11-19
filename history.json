@@ -307,5 +307,29 @@
     "r": 3.2
    }
   ]
+ },
+ {
+  "date": "2026-11-18",
+  "bias": "SHORT",
+  "prob": 55,
+  "biasOk": true,
+  "close": 3725.820068828125,
+  "ref": 3788.849853515625,
+  "plans": [
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 3869.5,
+    "result": "ishga tushmadi",
+    "r": 0
+   },
+   {
+    "dir": 1,
+    "main": false,
+    "entry": 3729.449951171875,
+    "result": "TP1",
+    "r": 0.75
+   }
+  ]
  }
 ]
