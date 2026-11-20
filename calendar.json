@@ -1,5 +1,5 @@
 {
- "at": 1795162991,
+ "at": 1795194698,
  "events": [
   {
    "title": "FOMC Member Barr Speaks",
@@ -315,6 +315,13 @@
    "impact": "Medium",
    "forecast": "",
    "previous": "4.3%"
+  },
+  {
+   "title": "President Trump Speaks",
+   "time": 1795194000,
+   "impact": "Medium",
+   "forecast": "",
+   "previous": ""
   },
   {
    "title": "FOMC Member Cook Speaks",
