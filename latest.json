@@ -1,16 +1,16 @@
 {
- "updatedAt": 1795162993,
+ "updatedAt": 1795425150,
  "brief": {
-  "date": "2026-11-20",
-  "at": 1795162992,
+  "date": "2026-11-23",
+  "at": 1795425149,
   "source": "Yahoo GC=F (spotga moslangan)",
-  "price": 3578.550049,
-  "changePct": -1.51,
-  "atrD1": 100.29014749391209,
-  "atrH1": 24.957012072272413,
+  "price": 3612.949951,
+  "changePct": -4.62,
+  "atrD1": 102.57198017043495,
+  "atrH1": 23.649572035761278,
   "bias": "SHORT",
-  "prob": 68,
-  "score": -61,
+  "prob": 64,
+  "score": -45,
   "factors": [
    {
     "key": "d1",
@@ -30,136 +30,147 @@
     "key": "h1",
     "label": "H1 konfluens",
     "weight": 15,
-    "value": -0.51,
-    "note": "H1 skor -51"
+    "value": -0.33,
+    "note": "H1 skor -33"
    },
    {
     "key": "ry",
     "label": "Real stavka (5 kun)",
     "weight": 15,
-    "value": -1,
-    "note": "real stavka 5 kunda +10 b.p. (2.88%)"
+    "value": -0.20000000000000018,
+    "note": "real stavka 5 kunda +2 b.p. (2.88%)"
    },
    {
     "key": "dxy",
     "label": "Dollar (5 kun)",
     "weight": 10,
-    "value": -0.38293789742422923,
-    "note": "DXY 5 kunda +0.38%"
+    "value": -0.15547607788863882,
+    "note": "DXY 5 kunda +0.16%"
    },
    {
     "key": "pd",
     "label": "Premium / Discount (D1)",
     "weight": 10,
     "value": 1,
-    "note": "narx kunlik diapazonning arzon qismida (-110%)"
+    "note": "narx kunlik diapazonning arzon qismida (-95%)"
    },
    {
     "key": "cot",
     "label": "COT (fondlar pozitsiyasi)",
     "weight": 5,
     "value": 0,
-    "note": "fondlar long pozitsiyasi 3 yillik diapazonning 42% ida"
+    "note": "fondlar long pozitsiyasi 3 yillik diapazonning 37% ida"
    }
   ],
   "notes": [],
   "events": [
    {
-    "title": "Revised UoM Consumer Sentiment",
-    "time": 1795186800,
+    "title": "Flash Manufacturing PMI",
+    "time": 1795445100,
     "impact": "Medium",
-    "forecast": "51.7",
-    "previous": "51.0"
+    "forecast": "54.5",
+    "previous": "56.0"
    },
    {
-    "title": "Revised UoM Inflation Expectations",
-    "time": 1795186800,
+    "title": "Flash Services PMI",
+    "time": 1795445100,
     "impact": "Medium",
-    "forecast": "",
-    "previous": "4.3%"
+    "forecast": "55.6",
+    "previous": "57.9"
    }
   ],
   "zones": [
    {
-    "lo": 3584.350097828125,
-    "hi": 3600,
-    "score": 6,
+    "lo": 3625,
+    "hi": 3666.249999828125,
+    "score": 6.5,
     "tags": [
-     "H1 bearish FVG",
+     "3625 yumaloq",
+     "Osiyo high",
+     "H1 BSL (stoplar)",
      "H4 bearish FVG",
-     "PDL",
-     "3600 yumaloq"
+     "H1 bearish FVG",
+     "3650 yumaloq"
     ],
     "strength": "kuchli",
     "side": 1
    },
    {
-    "lo": 3632.65014665625,
-    "hi": 3681.950195484375,
-    "score": 4.5,
+    "lo": 3673.749999828125,
+    "hi": 3676.449951,
+    "score": 1.5,
     "tags": [
-     "H4 bearish FVG",
      "H1 bearish FVG",
-     "3650 yumaloq",
      "3675 yumaloq"
     ],
-    "strength": "kuchli",
+    "strength": "kuchsiz",
     "side": 1
    },
    {
-    "lo": 3698.450195484375,
-    "hi": 3898.65014665625,
-    "score": 18,
+    "lo": 3692.949951,
+    "hi": 3903.449951,
+    "score": 17,
     "tags": [
      "H4 bearish FVG",
      "3700 yumaloq",
-     "3725 yumaloq",
      "H1 bearish OB",
+     "3725 yumaloq",
      "3750 yumaloq",
      "H1 BSL (stoplar)",
-     "PDH",
      "3775 yumaloq",
      "3800 yumaloq",
      "3825 yumaloq",
      "H4 bearish OB",
      "3850 yumaloq",
-     "H4 OTE",
-     "haftalik low",
-     "3875 yumaloq"
+     "3875 yumaloq",
+     "H4 BSL (stoplar)",
+     "3900 yumaloq",
+     "haftalik high"
     ],
     "strength": "kuchli",
     "side": 1
    },
    {
-    "lo": 3550,
-    "hi": 3550,
-    "score": 1,
+    "lo": 3587.149902171875,
+    "hi": 3606.149902171875,
+    "score": 6,
     "tags": [
-     "3550 yumaloq"
-    ],
-    "strength": "kuchsiz",
-    "side": -1
-   },
-   {
-    "lo": 3538.350097828125,
-    "hi": 3538.350097828125,
-    "score": 1,
-    "tags": [
+     "PDH",
+     "H4 bullish FVG",
+     "3600 yumaloq",
      "NY ochilishi"
     ],
-    "strength": "kuchsiz",
+    "strength": "kuchli",
     "side": -1
    },
    {
-    "lo": 3519.550049,
-    "hi": 3525,
-    "score": 2.5,
+    "lo": 3520.34985334375,
+    "hi": 3575,
+    "score": 9,
     "tags": [
-     "H1 SSL (stoplar)",
+     "H1 bullish OB",
+     "3525 yumaloq",
+     "H1 bullish FVG",
+     "H4 bullish FVG",
+     "3550 yumaloq",
+     "PDL",
      "Osiyo low",
-     "3525 yumaloq"
+     "3575 yumaloq"
     ],
-    "strength": "o'rta",
+    "strength": "kuchli",
+    "side": -1
+   },
+   {
+    "lo": 3500,
+    "hi": 3502.049804515625,
+    "score": 6,
+    "tags": [
+     "3500 yumaloq",
+     "H1 SSL (stoplar)",
+     "H4 SSL (stoplar)",
+     "haftalik low"
+    ],
+    "strength": "kuchli",
     "side": -1
    }
   ],
@@ -169,150 +180,142 @@
     "main": true,
     "kind": "qaytish",
     "zone": {
-     "lo": 3584.350097828125,
-     "hi": 3600,
-     "score": 6,
+     "lo": 3625,
+     "hi": 3666.249999828125,
+     "score": 6.5,
      "tags": [
-      "H1 bearish FVG",
+      "3625 yumaloq",
+      "Osiyo high",
+      "H1 BSL (stoplar)",
       "H4 bearish FVG",
-      "PDL",
-      "3600 yumaloq"
+      "H1 bearish FVG",
+      "3650 yumaloq"
      ],
      "strength": "kuchli",
      "side": 1
     },
-    "entry": 3592.1750489140622,
-    "sl": 3612.14065857188,
-    "tp1": 3550,
-    "tp2": 3525,
-    "tp1Tag": "3550 yumaloq",
-    "tp2Tag": "H1 SSL (stoplar)",
-    "rr1": 2.1,
-    "rr2": 3.4
-   },
-   {
-    "dir": -1,
-    "main": true,
-    "kind": "qaytish",
-    "zone": {
-     "lo": 3632.65014665625,
-     "hi": 3681.950195484375,
-     "score": 4.5,
-     "tags": [
-      "H4 bearish FVG",
-      "H1 bearish FVG",
-      "3650 yumaloq",
-      "3675 yumaloq"
-     ],
-     "strength": "kuchli",
-     "side": 1
-    },
-    "entry": 3657.3001710703124,
-    "sl": 3688.189448502443,
-    "tp1": 3600,
-    "tp2": 3550,
-    "tp1Tag": "H1 bearish FVG",
-    "tp2Tag": "3550 yumaloq",
-    "rr1": 1.9,
-    "rr2": 3.5
+    "entry": 3645.6249999140628,
+    "sl": 3672.1623928370655,
+    "tp1": 3575,
+    "tp2": 3502.049804515625,
+    "tp1Tag": "H1 bullish OB",
+    "tp2Tag": "3500 yumaloq",
+    "rr1": 2.7,
+    "rr2": 5.4
    },
    {
     "dir": 1,
     "main": false,
     "kind": "qaytish",
     "zone": {
-     "lo": 3519.550049,
-     "hi": 3525,
-     "score": 2.5,
+     "lo": 3587.149902171875,
+     "hi": 3606.149902171875,
+     "score": 6,
      "tags": [
-      "H1 SSL (stoplar)",
-      "Osiyo low",
-      "3525 yumaloq"
+      "PDH",
+      "H4 bullish FVG",
+      "3600 yumaloq",
+      "NY ochilishi"
      ],
-     "strength": "o'rta",
+     "strength": "kuchli",
      "side": -1
     },
-    "entry": 3522.2750244999997,
-    "sl": 3502.309414842182,
-    "tp1": 3578.550049,
-    "tp2": 3632.65014665625,
-    "tp1Tag": "hozirgi narx",
+    "entry": 3596.649902171875,
+    "sl": 3577.730244543266,
+    "tp1": 3673.749999828125,
+    "tp2": 3692.949951,
+    "tp1Tag": "H1 bearish FVG",
     "tp2Tag": "H4 bearish FVG",
-    "rr1": 2.8,
-    "rr2": 5.5
+    "rr1": 4.1,
+    "rr2": 5.1
    }
   ],
   "invalid": {
-   "price": 3898.65014665625,
+   "price": 3893.149902171875,
    "text": "H4 shami oxirgi H4 cho'qqisidan yuqorida yopilsa, short ssenariy bekor"
   },
-  "nyOpen": 3538.350097828125,
-  "pdh": 3764.15014665625,
-  "pdl": 3596.2502443125,
+  "nyOpen": 3606.149902171875,
+  "pdh": 3587.149902171875,
+  "pdl": 3565.449951,
   "macro": {
    "realYield": {
     "last": 2.88,
-    "prev5": 2.78,
-    "date": "2026-11-18"
+    "prev5": 2.86,
+    "date": "2026-11-19"
    },
    "nominal": {
-    "last": 5.07,
-    "prev5": 4.98,
-    "date": "2026-11-18"
+    "last": 5.04,
+    "prev5": 5.1,
+    "date": "2026-11-19"
    },
    "dxy": {
-    "last": 103.80599975585938,
-    "prev5": 103.41000366210938,
-    "date": "2026-11-20"
+    "last": 103.71099853515625,
+    "prev5": 103.55000305175781,
+    "date": "2026-11-23"
    },
    "dxySource": "DXY"
   },
   "cot": {
-   "date": "2026-11-10",
-   "net": 112341,
-   "netPrev": 103614,
-   "index3y": 42.28495074464574
+   "date": "2026-11-17",
+   "net": 102942,
+   "netPrev": 112341,
+   "index3y": 37.200370023748604
   },
-  "narrative": "D1 va H4 kunlik trendi pastga qarab ishlayapti, real stavkalar oxirgi besh kunda oshdi. Shuningdek, DXY dollarning biroz kuchaygani oltin uchun bosim yaratmoqda. Narx kunlik diapazonning arzon qismida tursa ham, asosiy tendentsiya va makro omillar pasayish tomon ekanini ko'rsatyapti."
+  "narrative": "Kunlik va to'rt soatlik trend pasayishda davom etmoqda va dollar ozgina bo'lsa ham kuchaydi. Lekin narx kunlik diapazonning juda past qismida turgani va o'rtacha ish haqi hamda PMI ma'lumotlari kutilayotgani bois, bugun ehtiyotkor bo'lish kerak."
  },
  "prevEval": {
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "bias": "SHORT",
   "prob": 68,
   "biasOk": true,
-  "close": 3632.550049,
-  "ref": 3723.52002,
+  "close": 3514.549804515625,
+  "ref": 3538.350097828125,
   "plans": [
    {
     "dir": -1,
     "main": true,
-    "entry": 3763.719971171875,
+    "entry": 3592.1750489140622,
     "result": "TP2",
-    "r": 3.2
+    "r": 3.4
    },
    {
     "dir": -1,
     "main": true,
-    "entry": 3846.9200444140624,
+    "entry": 3657.3001710703124,
     "result": "ishga tushmadi",
     "r": 0
    },
    {
     "dir": 1,
     "main": false,
-    "entry": 3722.4100344140625,
+    "entry": 3522.2750244999997,
     "result": "SL",
     "r": -1
    }
   ]
  },
  "stats": {
-  "days": 14,
-  "biasOk": 6,
-  "biasAcc": 43,
-  "trades": 11,
-  "wins": 4,
-  "totalR": 1.1
+  "days": 15,
+  "biasOk": 7,
+  "biasAcc": 47,
+  "trades": 13,
+  "wins": 5,
+  "totalR": 3.5
  },
- "upcoming": []
+ "upcoming": [
+  {
+   "title": "Core PCE Price Index m/m",
+   "time": 1795613400,
+   "impact": "High",
+   "forecast": "0.3%",
+   "previous": "0.3%"
+  },
+  {
+   "title": "Prelim GDP q/q",
+   "time": 1795613400,
+   "impact": "High",
+   "forecast": "3.5%",
+   "previous": "3.4%"
+  }
+ ]
 }
