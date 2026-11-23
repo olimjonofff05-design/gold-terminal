@@ -1,5 +1,5 @@
 {
- "at": 1795425149,
+ "at": 1795469433,
  "events": [
   {
    "title": "Flash Manufacturing PMI",
@@ -47,14 +47,14 @@
    "title": "CB Consumer Confidence",
    "time": 1795532400,
    "impact": "Medium",
-   "forecast": "92.1",
+   "forecast": "92.4",
    "previous": "91.7"
   },
   {
    "title": "Richmond Manufacturing Index",
    "time": 1795532400,
    "impact": "Low",
-   "forecast": "-3",
+   "forecast": "-2",
    "previous": "-2"
   },
   {
@@ -86,13 +86,6 @@
    "previous": "2.3%"
   },
   {
-   "title": "Unemployment Claims",
-   "time": 1795613400,
-   "impact": "Medium",
-   "forecast": "201K",
-   "previous": "203K"
-  },
-  {
    "title": "Core Durable Goods Orders m/m",
    "time": 1795613400,
    "impact": "Low",
@@ -103,7 +96,7 @@
    "title": "Durable Goods Orders m/m",
    "time": 1795613400,
    "impact": "Low",
-   "forecast": "0.5%",
+   "forecast": "0.7%",
    "previous": "1.8%"
   },
   {
@@ -121,10 +114,17 @@
    "previous": "0.5%"
   },
   {
+   "title": "Unemployment Claims",
+   "time": 1795613400,
+   "impact": "Low",
+   "forecast": "201K",
+   "previous": "203K"
+  },
+  {
    "title": "New Home Sales",
    "time": 1795618800,
    "impact": "Low",
-   "forecast": "649K",
+   "forecast": "650K",
    "previous": "676K"
   },
   {
@@ -138,7 +138,7 @@
    "title": "Natural Gas Storage",
    "time": 1795626000,
    "impact": "Low",
-   "forecast": "",
+   "forecast": "-19B",
    "previous": "20B"
   },
   {
