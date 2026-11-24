@@ -1,5 +1,5 @@
 {
- "at": 1795469433,
+ "at": 1795498124,
  "events": [
   {
    "title": "Flash Manufacturing PMI",
@@ -159,14 +159,14 @@
    "title": "Goods Trade Balance",
    "time": 1795786200,
    "impact": "Low",
-   "forecast": "-134.4B",
+   "forecast": "-135.9B",
    "previous": "-134.9B"
   },
   {
    "title": "Prelim Wholesale Inventories m/m",
    "time": 1795786200,
    "impact": "Low",
-   "forecast": "0.7%",
+   "forecast": "0.5%",
    "previous": "0.6%"
   }
  ]
