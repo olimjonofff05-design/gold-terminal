@@ -1,5 +1,5 @@
 {
- "at": 1795567871,
+ "at": 1795598261,
  "events": [
   {
    "title": "Flash Manufacturing PMI",
@@ -138,7 +138,7 @@
    "title": "Crude Oil Inventories",
    "time": 1795620600,
    "impact": "Low",
-   "forecast": "",
+   "forecast": "2.0M",
    "previous": "3.4M"
   },
   {

@@ -1,0 +1,298 @@
+{
+ "date": "2026-11-25",
+ "at": 1795598262,
+ "source": "Yahoo GC=F (spotga moslangan)",
+ "price": 3530.699951,
+ "changePct": -2.47,
+ "atrD1": 104.98502250915735,
+ "atrH1": 19.379803385678876,
+ "bias": "SHORT",
+ "prob": 55,
+ "score": -32,
+ "factors": [
+  {
+   "key": "d1",
+   "label": "D1 struktura va EMA",
+   "weight": 25,
+   "value": -1,
+   "note": "kunlik trend pastga"
+  },
+  {
+   "key": "h4",
+   "label": "H4 struktura",
+   "weight": 20,
+   "value": -1,
+   "note": "H4 da past cho'qqilar sindirilyapti"
+  },
+  {
+   "key": "h1",
+   "label": "H1 konfluens",
+   "weight": 15,
+   "value": -0.61,
+   "note": "H1 skor -61"
+  },
+  {
+   "key": "ry",
+   "label": "Real stavka (5 kun)",
+   "weight": 15,
+   "value": 1,
+   "note": "real stavka 5 kunda -13 b.p. (2.79%)"
+  },
+  {
+   "key": "dxy",
+   "label": "Dollar (5 kun)",
+   "weight": 10,
+   "value": -0.14442665607297123,
+   "note": "DXY 5 kunda +0.14%"
+  },
+  {
+   "key": "pd",
+   "label": "Premium / Discount (D1)",
+   "weight": 10,
+   "value": 0.9041233200425645,
+   "note": "narx kunlik diapazonning arzon qismida (9%)"
+  },
+  {
+   "key": "cot",
+   "label": "COT (fondlar pozitsiyasi)",
+   "weight": 5,
+   "value": 0,
+   "note": "fondlar long pozitsiyasi 3 yillik diapazonning 37% ida"
+  }
+ ],
+ "notes": [
+  "bugun yuqori ta'sirli yangilik bor, ehtimol 55% bilan cheklandi"
+ ],
+ "events": [
+  {
+   "title": "Core PCE Price Index m/m",
+   "time": 1795613400,
+   "impact": "High",
+   "forecast": "0.3%",
+   "previous": "0.3%"
+  },
+  {
+   "title": "Prelim GDP q/q",
+   "time": 1795613400,
+   "impact": "High",
+   "forecast": "3.5%",
+   "previous": "3.4%"
+  },
+  {
+   "title": "Prelim GDP Price Index q/q",
+   "time": 1795613400,
+   "impact": "Medium",
+   "forecast": "2.3%",
+   "previous": "2.3%"
+  }
+ ],
+ "zones": [
+  {
+   "lo": 3500,
+   "hi": 3581.499999828125,
+   "score": 16,
+   "tags": [
+    "3500 yumaloq",
+    "H1 bullish FVG",
+    "Osiyo low",
+    "H4 OTE",
+    "H1 bearish OB",
+    "PDL",
+    "NY ochilishi",
+    "3525 yumaloq",
+    "H1 BSL (stoplar)",
+    "Osiyo high",
+    "H1 bearish FVG",
+    "H4 bearish FVG",
+    "3550 yumaloq",
+    "3575 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 3590.399902171875,
+   "hi": 3638.499999828125,
+   "score": 4.5,
+   "tags": [
+    "H1 bearish OB",
+    "3600 yumaloq",
+    "H1 BSL (stoplar)",
+    "H1 bearish FVG",
+    "3625 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 3660.499999828125,
+   "hi": 3691.30004865625,
+   "score": 7.5,
+   "tags": [
+    "H4 BSL (stoplar)",
+    "D1 bearish FVG",
+    "H1 bearish FVG",
+    "H4 bearish FVG",
+    "3675 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": 1
+  },
+  {
+   "lo": 3472.399902171875,
+   "hi": 3480.80004865625,
+   "score": 5.5,
+   "tags": [
+    "H1 SSL (stoplar)",
+    "H4 SSL (stoplar)",
+    "haftalik low",
+    "3475 yumaloq"
+   ],
+   "strength": "kuchli",
+   "side": -1
+  },
+  {
+   "lo": 3450,
+   "hi": 3450,
+   "score": 1,
+   "tags": [
+    "3450 yumaloq"
+   ],
+   "strength": "kuchsiz",
+   "side": -1
+  },
+  {
+   "lo": 3400,
+   "hi": 3400,
+   "score": 1,
+   "tags": [
+    "3400 yumaloq"
+   ],
+   "strength": "kuchsiz",
+   "side": -1
+  }
+ ],
+ "plans": [
+  {
+   "dir": -1,
+   "main": true,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 3500,
+    "hi": 3581.499999828125,
+    "score": 16,
+    "tags": [
+     "3500 yumaloq",
+     "H1 bullish FVG",
+     "Osiyo low",
+     "H4 OTE",
+     "H1 bearish OB",
+     "PDL",
+     "NY ochilishi",
+     "3525 yumaloq",
+     "H1 BSL (stoplar)",
+     "Osiyo high",
+     "H1 bearish FVG",
+     "H4 bearish FVG",
+     "3550 yumaloq",
+     "3575 yumaloq"
+    ],
+    "strength": "kuchli",
+    "side": 1
+   },
+   "entry": 3540.7499999140628,
+   "sl": 3586.3449506745446,
+   "tp1": 3450,
+   "tp2": 3400,
+   "tp1Tag": "3450 yumaloq",
+   "tp2Tag": "3400 yumaloq",
+   "rr1": 2,
+   "rr2": 3.1
+  },
+  {
+   "dir": -1,
+   "main": true,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 3590.399902171875,
+    "hi": 3638.499999828125,
+    "score": 4.5,
+    "tags": [
+     "H1 bearish OB",
+     "3600 yumaloq",
+     "H1 BSL (stoplar)",
+     "H1 bearish FVG",
+     "3625 yumaloq"
+    ],
+    "strength": "kuchli",
+    "side": 1
+   },
+   "entry": 3614.449951,
+   "sl": 3643.3449506745446,
+   "tp1": 3530.699951,
+   "tp2": 3480.80004865625,
+   "tp1Tag": "hozirgi narx",
+   "tp2Tag": "H1 SSL (stoplar)",
+   "rr1": 2.9,
+   "rr2": 4.6
+  },
+  {
+   "dir": 1,
+   "main": false,
+   "kind": "qaytish",
+   "zone": {
+    "lo": 3472.399902171875,
+    "hi": 3480.80004865625,
+    "score": 5.5,
+    "tags": [
+     "H1 SSL (stoplar)",
+     "H4 SSL (stoplar)",
+     "haftalik low",
+     "3475 yumaloq"
+    ],
+    "strength": "kuchli",
+    "side": -1
+   },
+   "entry": 3476.5999754140626,
+   "sl": 3461.0961327055193,
+   "tp1": 3500,
+   "tp2": 3530.699951,
+   "tp1Tag": "3500 yumaloq",
+   "tp2Tag": "hozirgi narx",
+   "rr1": 1.5,
+   "rr2": 3.5
+  }
+ ],
+ "invalid": {
+  "price": 3660.499999828125,
+  "text": "H4 shami oxirgi H4 cho'qqisidan yuqorida yopilsa, short ssenariy bekor"
+ },
+ "nyOpen": 3517.600097484375,
+ "pdh": 3646.199951,
+ "pdl": 3514.899902171875,
+ "macro": {
+  "realYield": {
+   "last": 2.79,
+   "prev5": 2.92,
+   "date": "2026-11-23"
+  },
+  "nominal": {
+   "last": 4.92,
+   "prev5": 5.12,
+   "date": "2026-11-23"
+  },
+  "dxy": {
+   "last": 104.01000213623047,
+   "prev5": 103.86000061035156,
+   "date": "2026-11-25"
+  },
+  "dxySource": "DXY"
+ },
+ "cot": {
+  "date": "2026-11-17",
+  "net": 102942,
+  "netPrev": 112341,
+  "index3y": 37.200370023748604
+ },
+ "narrative": "Kunlik va to'rt soatlik grafikda trend pastga qarab ishlayapti, sotuvchilar ustunlikni ushlab turibdi. Real stavkalar pastlagani oltinga biroz yordam berishi mumkin edi, lekin narx hozir kunlik diapazonning quyi qismida turgani uchun bu omil to'liq ish bermayapti. Bugun e'lon qilinadigan Core PCE va boshqa muhim makro ma'lumotlar bozorni keskin tebratishi mumkinligi bois, ehtimollik ehtiyotkorlik bilan 55 foizda qoldirildi."
+}

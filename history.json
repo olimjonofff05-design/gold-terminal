@@ -393,5 +393,29 @@
     "r": -1
    }
   ]
+ },
+ {
+  "date": "2026-11-23",
+  "bias": "SHORT",
+  "prob": 64,
+  "biasOk": true,
+  "close": 3603.899902171875,
+  "ref": 3606.149902171875,
+  "plans": [
+   {
+    "dir": -1,
+    "main": true,
+    "entry": 3645.6249999140628,
+    "result": "ochiq",
+    "r": 0
+   },
+   {
+    "dir": 1,
+    "main": false,
+    "entry": 3596.649902171875,
+    "result": "ochiq",
+    "r": 0
+   }
+  ]
  }
 ]
