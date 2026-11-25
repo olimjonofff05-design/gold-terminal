@@ -1,5 +1,5 @@
 {
- "at": 1795536943,
+ "at": 1795567871,
  "events": [
   {
    "title": "Flash Manufacturing PMI",
@@ -60,6 +60,13 @@
   {
    "title": "API Weekly Statistical Bulletin",
    "time": 1795555800,
+   "impact": "Low",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "FOMC Member Bowman Speaks",
+   "time": 1795609500,
    "impact": "Low",
    "forecast": "",
    "previous": ""
